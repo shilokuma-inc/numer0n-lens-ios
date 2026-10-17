@@ -48,6 +48,8 @@ struct TutorialView: View {
             .accessibilityIdentifier(isLastPage ? "tutorialStartButton" : "tutorialNextButton")
             .padding()
         }
+        // 子のボタンの identifier を上書きしないよう、コンテナとして identifier を付ける。
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("tutorial")
     }
 
