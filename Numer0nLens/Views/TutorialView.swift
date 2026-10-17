@@ -84,7 +84,7 @@ struct TutorialPageView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(page.paragraphs, id: \.self) { paragraph in
+                    ForEach(Array(page.paragraphs.enumerated()), id: \.offset) { _, paragraph in
                         Text(paragraph)
                             .fixedSize(horizontal: false, vertical: true)
                     }
