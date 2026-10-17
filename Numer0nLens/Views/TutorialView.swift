@@ -96,6 +96,18 @@ struct TutorialPageView: View {
     }
 }
 
+/// チュートリアルを開き直す「？」ボタン。ツールバーに置く。
+struct TutorialButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label("使い方", systemImage: "questionmark.circle")
+        }
+        .accessibilityIdentifier("tutorialButton")
+    }
+}
+
 #Preview {
     TutorialView {}
 }
