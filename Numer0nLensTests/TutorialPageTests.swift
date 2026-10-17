@@ -30,3 +30,12 @@ final class TutorialPageTests: XCTestCase {
         XCTAssertTrue(rulePage.paragraphs.contains { $0.contains("123") && $0.contains("135") && $0.contains(result.description) })
     }
 }
+
+final class TutorialLaunchTests: XCTestCase {
+    func testShowsOnlyWhenNotSeenAndNotSkipped() {
+        XCTAssertTrue(ContentView.shouldShowTutorialOnLaunch(hasSeenTutorial: false, arguments: ["Numer0nLens"]))
+        XCTAssertFalse(ContentView.shouldShowTutorialOnLaunch(hasSeenTutorial: true, arguments: ["Numer0nLens"]))
+        XCTAssertFalse(ContentView.shouldShowTutorialOnLaunch(hasSeenTutorial: false, arguments: ["Numer0nLens", "-skipTutorial"]))
+        XCTAssertFalse(ContentView.shouldShowTutorialOnLaunch(hasSeenTutorial: true, arguments: ["Numer0nLens", "-skipTutorial"]))
+    }
+}
