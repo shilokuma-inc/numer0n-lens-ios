@@ -26,8 +26,7 @@ final class TutorialUITests: XCTestCase {
         XCTAssertTrue(skipButton.waitForExistence(timeout: 5))
         skipButton.tap()
 
-        XCTAssertTrue(app.buttons["ゲームを始める"].waitForExistence(timeout: 5))
-        XCTAssertFalse(app.buttons["tutorialSkipButton"].exists)
+        assertTutorialClosed(in: app)
     }
 
     func testStartButtonOnLastPageClosesTutorial() {
@@ -43,13 +42,24 @@ final class TutorialUITests: XCTestCase {
         XCTAssertTrue(startButton.waitForExistence(timeout: 5))
         startButton.tap()
 
-        XCTAssertTrue(app.buttons["ゲームを始める"].waitForExistence(timeout: 5))
+        assertTutorialClosed(in: app)
     }
 
     func testSkipTutorialArgumentSuppressesTutorial() {
         let app = launchAsFirstTime(extraArguments: ["-skipTutorial"])
 
         XCTAssertTrue(app.buttons["ゲームを始める"].waitForExistence(timeout: 5))
-        XCTAssertFalse(app.buttons["tutorialSkipButton"].exists)
+        // 表示のアニメーションが始まる前に判定しないよう、しばらく待っても出ないことを確かめる。
+        XCTAssertFalse(app.otherElements["tutorial"].waitForExistence(timeout: 2))
+    }
+
+    /// チュートリアルが消えて、スタート画面を操作できること。
+    private func assertTutorialClosed(in app: XCUIApplication) {
+        let tutorial = app.otherElements["tutorial"]
+        let disappeared = expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: tutorial)
+        wait(for: [disappeared], timeout: 5)
+        // 閉じた後にもう一度出てこないこと。
+        XCTAssertFalse(tutorial.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.buttons["ゲームを始める"].isHittable)
     }
 }
