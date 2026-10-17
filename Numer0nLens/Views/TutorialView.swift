@@ -26,6 +26,7 @@ struct TutorialView: View {
                     .accessibilityIdentifier("tutorialSkipButton")
                     .opacity(isLastPage ? 0 : 1)
                     .disabled(isLastPage)
+                    .accessibilityHidden(isLastPage)
             }
             .padding(.horizontal)
             .padding(.top, 8)
