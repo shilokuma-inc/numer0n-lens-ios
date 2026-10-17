@@ -13,6 +13,7 @@ struct GameView: View {
 
     @State private var side: Side = .mine
     @State private var isConfirmingRestart = false
+    @State private var isShowingTutorial = false
 
     enum Side: Hashable, CaseIterable {
         case mine
@@ -53,7 +54,10 @@ struct GameView: View {
         .navigationTitle("\(game.digitCount.label)のゲーム")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                TutorialButton {
+                    isShowingTutorial = true
+                }
                 Menu("やり直す") {
                     Button("同じ桁数でやり直す") {
                         isConfirmingRestart = true
@@ -68,6 +72,12 @@ struct GameView: View {
             Button("やり直す", role: .destructive) {
                 game.restart()
                 side = .mine
+            }
+        }
+        // 開き直して閉じても、ゲームの状態（履歴・入力中の値）はこの画面に残る。
+        .fullScreenCover(isPresented: $isShowingTutorial) {
+            TutorialView {
+                isShowingTutorial = false
             }
         }
     }
