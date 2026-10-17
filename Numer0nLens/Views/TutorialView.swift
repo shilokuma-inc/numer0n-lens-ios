@@ -69,11 +69,14 @@ struct TutorialView: View {
 struct TutorialPageView: View {
     let page: TutorialPage
 
+    /// 文字の大きさの設定に合わせてアイコンも大きくする。
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize: CGFloat = 64
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 Image(systemName: page.systemImage)
-                    .font(.system(size: 64))
+                    .font(.system(size: iconSize))
                     .foregroundStyle(.tint)
                     .accessibilityHidden(true)
                 Text(page.title)
