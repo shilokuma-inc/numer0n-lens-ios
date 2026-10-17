@@ -26,6 +26,7 @@ struct TutorialView: View {
                     .accessibilityIdentifier("tutorialSkipButton")
                     .opacity(isLastPage ? 0 : 1)
                     .disabled(isLastPage)
+                    .accessibilityHidden(isLastPage)
             }
             .padding(.horizontal)
             .padding(.top, 8)
@@ -48,6 +49,8 @@ struct TutorialView: View {
             .accessibilityIdentifier(isLastPage ? "tutorialStartButton" : "tutorialNextButton")
             .padding()
         }
+        // 子のボタンの identifier を上書きしないよう、コンテナとして identifier を付ける。
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("tutorial")
     }
 
