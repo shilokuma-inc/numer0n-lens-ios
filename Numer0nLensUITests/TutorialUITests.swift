@@ -9,6 +9,9 @@ import XCTest
 final class TutorialUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
+        // 先に走る Numer0nLensUITestsLaunchTests が向きを変えたまま終わるため、縦向きに戻す。
+        // 横向きだとゲーム画面の入力欄が List の画面外になり、要素として見つからない。
+        XCUIDevice.shared.orientation = .portrait
     }
 
     /// 表示済みの記録を消した状態（初回の起動）で起動する。
