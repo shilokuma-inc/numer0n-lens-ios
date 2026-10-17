@@ -19,6 +19,9 @@
 		F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000056 /* GameStateTests.swift */; };
 		F0A1C0DE0000000000000001 /* Numer0nAnalysisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */; };
 		F0A1C0DE0000000000000071 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000072 /* StartView.swift */; };
+		F0A1C0DE00000000000000C1 /* TutorialPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C2 /* TutorialPage.swift */; };
+		F0A1C0DE00000000000000C3 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C4 /* TutorialView.swift */; };
+		F0A1C0DE00000000000000C5 /* TutorialPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */; };
 		F0A1C0DE0000000000000073 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000074 /* GameView.swift */; };
 		F0A1C0DE0000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000004 /* ContentView.swift */; };
 		F0A1C0DE0000000000000011 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000012 /* Rule.swift */; };
@@ -76,6 +79,9 @@
 		F0A1C0DE0000000000000056 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numer0nAnalysisApp.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000072 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000C2 /* TutorialPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPage.swift; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000C4 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000074 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000012 /* Rule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
@@ -169,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				F0A1C0DE00000000000000B6 /* ProgressComparisonTests.swift */,
+				F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */,
 				F0A1C0DE0000000000000056 /* GameStateTests.swift */,
 				F0A1C0DE0000000000000086 /* CallInputTests.swift */,
 				F0A1C0DE0000000000000044 /* BestMoveTests.swift */,
@@ -200,6 +207,8 @@
 				F0A1C0DE0000000000000084 /* DeductionView.swift */,
 				F0A1C0DE0000000000000092 /* CandidateListView.swift */,
 				F0A1C0DE00000000000000A2 /* BestMoveSection.swift */,
+				F0A1C0DE00000000000000C2 /* TutorialPage.swift */,
+				F0A1C0DE00000000000000C4 /* TutorialView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -376,6 +385,8 @@
 				F0A1C0DE0000000000000083 /* DeductionView.swift in Sources */,
 				F0A1C0DE0000000000000091 /* CandidateListView.swift in Sources */,
 				F0A1C0DE00000000000000A1 /* BestMoveSection.swift in Sources */,
+				F0A1C0DE00000000000000C1 /* TutorialPage.swift in Sources */,
+				F0A1C0DE00000000000000C3 /* TutorialView.swift in Sources */,
 				F0A1C0DE0000000000000011 /* Rule.swift in Sources */,
 				F0A1C0DE0000000000000041 /* BestMove.swift in Sources */,
 				F0A1C0DE0000000000000061 /* BestMoveSearch.swift in Sources */,
@@ -391,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A1C0DE00000000000000B5 /* ProgressComparisonTests.swift in Sources */,
+				F0A1C0DE00000000000000C5 /* TutorialPageTests.swift in Sources */,
 				F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */,
 				F0A1C0DE0000000000000085 /* CallInputTests.swift in Sources */,
 				F0A1C0DE0000000000000043 /* BestMoveTests.swift in Sources */,
