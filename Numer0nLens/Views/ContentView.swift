@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var game: GameState?
     @AppStorage(Self.hasSeenTutorialKey) private var hasSeenTutorial = false
     @State private var isShowingTutorial = false
+    /// 起動時の判定を済ませたか。cover を閉じると `onAppear` がまた呼ばれることがあるため、判定は 1 回だけにする。
+    @State private var didCheckTutorialOnLaunch = false
 
     var body: some View {
         NavigationStack {
@@ -30,6 +32,10 @@ struct ContentView: View {
             }
         }
         .onAppear {
+            guard !didCheckTutorialOnLaunch else {
+                return
+            }
+            didCheckTutorialOnLaunch = true
             if Self.shouldShowTutorialOnLaunch(hasSeenTutorial: hasSeenTutorial, arguments: ProcessInfo.processInfo.arguments) {
                 isShowingTutorial = true
             }
@@ -40,6 +46,7 @@ struct ContentView: View {
             onDismiss: { hasSeenTutorial = true },
             content: {
                 TutorialView {
+                    hasSeenTutorial = true
                     isShowingTutorial = false
                 }
             }
