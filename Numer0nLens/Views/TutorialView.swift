@@ -69,11 +69,14 @@ struct TutorialView: View {
 struct TutorialPageView: View {
     let page: TutorialPage
 
+    /// 文字の大きさの設定に合わせてアイコンも大きくする。
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize: CGFloat = 64
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 Image(systemName: page.systemImage)
-                    .font(.system(size: 64))
+                    .font(.system(size: iconSize))
                     .foregroundStyle(.tint)
                     .accessibilityHidden(true)
                 Text(page.title)
@@ -81,7 +84,7 @@ struct TutorialPageView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(page.paragraphs, id: \.self) { paragraph in
+                    ForEach(Array(page.paragraphs.enumerated()), id: \.offset) { _, paragraph in
                         Text(paragraph)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -93,6 +96,18 @@ struct TutorialPageView: View {
             // ページの点と重ならないよう下に余白を取る。
             .padding(.bottom, 56)
         }
+    }
+}
+
+/// チュートリアルを開き直す「？」ボタン。ツールバーに置く。
+struct TutorialButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label("使い方", systemImage: "questionmark.circle")
+        }
+        .accessibilityIdentifier("tutorialButton")
     }
 }
 

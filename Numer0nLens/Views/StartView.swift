@@ -10,6 +10,7 @@ struct StartView: View {
     let onStart: (DigitCount) -> Void
 
     @State private var digitCount: DigitCount = .three
+    @State private var isShowingTutorial = false
 
     var body: some View {
         Form {
@@ -34,6 +35,18 @@ struct StartView: View {
             }
         }
         .navigationTitle("ヌメロン解析")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                TutorialButton {
+                    isShowingTutorial = true
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $isShowingTutorial) {
+            TutorialView {
+                isShowingTutorial = false
+            }
+        }
     }
 }
 
