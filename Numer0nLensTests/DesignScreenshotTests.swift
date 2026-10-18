@@ -46,7 +46,7 @@ final class DesignScreenshotTests: XCTestCase {
             GameView(game: game) {}.environment(\.dynamicTypeSize, .accessibility2),
             name: "deduction-large-text",
             styles: [.light],
-            height: 2_600
+            height: 4_400
         )
     }
 
