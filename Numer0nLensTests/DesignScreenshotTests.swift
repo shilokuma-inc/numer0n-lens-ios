@@ -78,6 +78,23 @@ final class DesignScreenshotTests: XCTestCase {
         )
     }
 
+    /// 最善手のカード（4 桁・最大の文字サイズ）。行が横に収まらないとき、情報量を次の行に下ろすこと。
+    func testBestMoveWithLargeText() async throws {
+        let game = try Self.game(digitCount: .four, answer: "4071", calls: ["1234"])
+        try await attachScreen(
+            ScrollView {
+                BestMoveSection(deduction: game.myDeduction) { _ in }
+                    .padding(Spacing.large)
+            }
+            .paperBackground()
+            .limitedDynamicTypeSize()
+            .environment(\.dynamicTypeSize, .accessibility5),
+            name: "best-move-large-text",
+            styles: [.light],
+            height: 1_400
+        )
+    }
+
     /// 履歴を入れたゲーム。回答は `answer` に対する判定で作る。
     private static func game(digitCount: DigitCount, answer: String, calls: [String]) throws -> GameState {
         let game = GameState(digitCount: digitCount)
