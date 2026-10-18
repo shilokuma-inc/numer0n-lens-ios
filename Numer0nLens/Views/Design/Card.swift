@@ -28,12 +28,16 @@ struct Card<Content: View>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.large)
         .foregroundStyle(Palette.ink)
-        .background(Palette.card, in: RoundedRectangle(cornerRadius: Radius.card, style: .continuous))
+        .background {
+            // 影は面にだけ付ける（中身に付けると文字が二重に見える）。
+            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                .fill(Palette.card)
+                .shadow(color: Palette.tileEdge.opacity(0.6), radius: 0, x: 0, y: 3)
+        }
         .overlay {
             RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
                 .strokeBorder(Palette.line, lineWidth: 1)
         }
-        .shadow(color: Palette.tileEdge.opacity(0.6), radius: 0, x: 0, y: 3)
     }
 }
 
