@@ -46,7 +46,6 @@ struct DeductionView: View {
 
     @State private var input = CallInput()
     @FocusState private var isNumberFieldFocused: Bool
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var rule: Rule { deduction.rule }
 
@@ -128,7 +127,11 @@ struct DeductionView: View {
         return TextField(
             "\(rule.length) 桁の数字",
             text: $input.text,
-            prompt: Text("\(rule.length) 桁の数字").foregroundStyle(Palette.inkSecondary)
+            // El Messiri に日本語の字形は無いので、案内の文は端末のフォントで出す（数字のフォントで出すと別の字形で描かれる）。
+            prompt: Text("\(rule.length) 桁の数字")
+                .font(.title3.weight(.semibold))
+                .tracking(0)
+                .foregroundStyle(Palette.inkSecondary)
         )
         .keyboardType(.numberPad)
         .font(Typography.display(size: 32, relativeTo: .title))
@@ -166,20 +169,10 @@ struct DeductionView: View {
         }
         .pickerStyle(.segmented)
         .labelsHidden()
-        // 大きい文字ではラベルの横にセグメントが収まらないので、ラベルを上に置く。
-        return Group {
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: Spacing.small) {
-                    label
-                    picker
-                }
-            } else {
-                HStack(spacing: Spacing.medium) {
-                    label
-                        .frame(minWidth: 72, alignment: .leading)
-                    picker
-                }
-            }
+        return HStack(spacing: Spacing.medium) {
+            label
+                .frame(minWidth: 72, alignment: .leading)
+            picker
         }
     }
 
