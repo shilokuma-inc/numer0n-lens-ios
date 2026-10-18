@@ -68,7 +68,8 @@ final class ColorTokenTests: XCTestCase {
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
-        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        // sRGB の外の色空間だと false になり 0 のまま計算されるので、確かめておく。
+        XCTAssertTrue(color.getRed(&red, green: &green, blue: &blue, alpha: &alpha))
         func linear(_ value: CGFloat) -> Double {
             let value = Double(value)
             return value <= 0.039_28 ? value / 12.92 : pow((value + 0.055) / 1.055, 2.4)
