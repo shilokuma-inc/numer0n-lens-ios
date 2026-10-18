@@ -42,24 +42,27 @@ struct DigitTile: View {
     let digit: Character?
     var size: Size = .medium
 
-    @ScaledMetric private var scale: CGFloat = 1
-
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: Radius.tile, style: .continuous)
         Text(digit.map { String($0) } ?? " ")
             .font(Typography.display(size: size.digitSize, relativeTo: size.textStyle))
             .foregroundStyle(Palette.ink)
-            .frame(minWidth: size.digitSize * 1.2 * scale, minHeight: size.digitSize * 1.5 * scale)
+            // 枠の最小の大きさは固定し、文字サイズの設定で数字が大きくなった分は余白ごと広げる
+            // （枠も倍率で広げると、数字より枠の伸びが大きくなり画面からはみ出すため）。
+            .frame(minWidth: size.digitSize * 1.2, minHeight: size.digitSize * 1.5)
             .padding(.horizontal, Spacing.extraSmall)
             .background {
                 if digit == nil {
                     shape.strokeBorder(Palette.inkSecondary, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
                 } else {
+                    // 面と地色の差が小さいので、細い枠で輪郭を出す。
                     shape.fill(Palette.tileFace)
+                        .overlay(shape.strokeBorder(Palette.tileEdge, lineWidth: 1))
                         .background(shape.fill(Palette.tileEdge).offset(y: size.edge))
                 }
             }
-            .padding(.bottom, digit == nil ? 0 : size.edge)
+            // 未入力の枠にも厚みの分の余白を付け、入力済みのタイルと高さをそろえる。
+            .padding(.bottom, size.edge)
     }
 }
 
@@ -77,7 +80,7 @@ struct DigitTiles: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Self.accessibilityText(for: text))
+        .accessibilityLabel(Self.accessibilityText(for: text, length: length))
     }
 
     /// タイルに並べる文字。`length` まで `nil`（未入力）で埋める。`length` より長い分はそのまま出す。
@@ -88,8 +91,11 @@ struct DigitTiles: View {
     }
 
     /// VoiceOver で 1 桁ずつ読ませる（「123」を「百二十三」と読ませない）。
-    static func accessibilityText(for text: String) -> String {
-        text.isEmpty ? "未入力" : text.map(String.init).joined(separator: " ")
+    /// 桁数に足りないときは、画面の点線の枠の代わりに残りの桁数を読む。
+    static func accessibilityText(for text: String, length: Int? = nil) -> String {
+        let digits = text.isEmpty ? "未入力" : text.map(String.init).joined(separator: " ")
+        let missing = (length ?? 0) - text.count
+        return missing > 0 && !text.isEmpty ? "\(digits)、残り \(missing) 桁" : digits
     }
 }
 

@@ -29,6 +29,9 @@ final class DesignComponentTests: XCTestCase {
     func testDigitsAreReadOneByOne() {
         XCTAssertEqual(DigitTiles.accessibilityText(for: "407"), "4 0 7")
         XCTAssertEqual(DigitTiles.accessibilityText(for: ""), "未入力")
+        XCTAssertEqual(DigitTiles.accessibilityText(for: "52", length: 4), "5 2、残り 2 桁")
+        XCTAssertEqual(DigitTiles.accessibilityText(for: "", length: 4), "未入力")
+        XCTAssertEqual(DigitTiles.accessibilityText(for: "5291", length: 4), "5 2 9 1")
     }
 
     func testEatBiteBadgeReadsBothCounts() {
