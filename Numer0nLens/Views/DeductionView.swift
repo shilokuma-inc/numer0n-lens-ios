@@ -73,11 +73,8 @@ struct DeductionView: View {
                     inputCard
 
                     if role.showsBestMove {
-                        // 最善手の見た目は後続のタスクで作り直す。ここではカードに載せるだけにする。
-                        Card {
-                            BestMoveSection(deduction: deduction) { guess in
-                                input.text = guess.description
-                            }
+                        BestMoveSection(deduction: deduction) { guess in
+                            input.text = guess.description
                         }
                     }
                 }
