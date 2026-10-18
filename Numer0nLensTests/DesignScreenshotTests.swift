@@ -40,13 +40,24 @@ final class DesignScreenshotTests: XCTestCase {
     }
 
     /// 文字サイズを大きくしたとき（アクセシビリティサイズ）の見え方。
+    /// 1 枚の高さには上限があり（約 2,700pt を超えると真っ白になる）、入力欄までを撮る。
     func testDeductionScreenWithLargeText() async throws {
         let game = try Self.game(digitCount: .three, answer: "407", calls: ["123", "456"])
         try await attachScreen(
             GameView(game: game) {}.environment(\.dynamicTypeSize, .accessibility2),
             name: "deduction-large-text",
-            styles: [.light],
-            height: 4_400
+            styles: [.light]
+        )
+    }
+
+    /// 大きい文字での履歴の行。最善手の無い相手の推理で撮り、履歴まで 1 枚に収める。
+    func testOpponentDeductionWithLargeText() async throws {
+        let game = try Self.game(digitCount: .four, answer: "4071", calls: ["1234", "5678"])
+        let deduction = game.myDeduction
+        try await attachScreen(
+            DeductionView(deduction: deduction, role: .opponent).environment(\.dynamicTypeSize, .accessibility2),
+            name: "deduction-large-text-history",
+            styles: [.light]
         )
     }
 
@@ -67,7 +78,7 @@ final class DesignScreenshotTests: XCTestCase {
         _ view: some View,
         name: String,
         styles: [UIUserInterfaceStyle] = [.light, .dark],
-        height: CGFloat = 1_900
+        height: CGFloat = 2_700
     ) async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         for style in styles {
