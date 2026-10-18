@@ -42,6 +42,33 @@ final class DesignScreenshotTests: XCTestCase {
         )
     }
 
+    /// 進み具合の比較の見え方（優勢・当てた・矛盾）。ゲームの画面の上部はこの部品と切り替えで組む。
+    func testProgressComparisonStates() throws {
+        let comparisons = [
+            ProgressComparison(myRemaining: 12, opponentRemaining: 40),
+            ProgressComparison(myRemaining: 40, opponentRemaining: 12),
+            ProgressComparison(myRemaining: 1, opponentRemaining: 30, iSolved: true),
+            ProgressComparison(myRemaining: 0, opponentRemaining: 40)
+        ]
+        for scheme in [ColorScheme.light, .dark] {
+            let renderer = ImageRenderer(
+                content: VStack(spacing: Spacing.large) {
+                    SideSwitcher(selection: .constant(.mine))
+                    ForEach(Array(comparisons.enumerated()), id: \.offset) { _, comparison in
+                        ProgressComparisonView(comparison: comparison)
+                    }
+                }
+                .padding(Spacing.large)
+                .frame(width: 393)
+                .paperBackground()
+                .environment(\.colorScheme, scheme)
+            )
+            renderer.scale = 2
+            let image = try XCTUnwrap(renderer.uiImage, "progress-comparison (\(scheme))")
+            attach(image, name: "progress-comparison-\(scheme == .dark ? "dark" : "light")")
+        }
+    }
+
     /// 推理の画面（自分の推理・3 桁・履歴 3 件）。
     func testDeductionScreen() async throws {
         let game = try Self.game(digitCount: .three, answer: "407", calls: ["123", "456", "780"])
