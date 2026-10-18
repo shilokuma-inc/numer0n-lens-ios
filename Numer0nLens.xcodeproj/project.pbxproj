@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D351C0DE0000000000000121 /* DesignScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000122 /* DesignScreenshotTests.swift */; };
+		D351C0DE0000000000000101 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000102 /* Theme.swift */; };
+		D351C0DE0000000000000103 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000104 /* Card.swift */; };
+		D351C0DE0000000000000105 /* DigitTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000106 /* DigitTile.swift */; };
+		D351C0DE0000000000000107 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000108 /* ButtonStyles.swift */; };
+		D351C0DE0000000000000109 /* EatBiteBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE000000000000010A /* EatBiteBadge.swift */; };
+		D351C0DE000000000000010B /* DesignGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE000000000000010C /* DesignGallery.swift */; };
+		D351C0DE000000000000010D /* DesignComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE000000000000010E /* DesignComponentTests.swift */; };
 		F0A1C0DE00000000000000E1 /* ElMessiri-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */; };
 		F0A1C0DE00000000000000E3 /* ElMessiri-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */; };
 		F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E8 /* BundledFontTests.swift */; };
@@ -67,6 +75,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D351C0DE0000000000000122 /* DesignScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScreenshotTests.swift; sourceTree = "<group>"; };
+		D351C0DE0000000000000102 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D351C0DE0000000000000104 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		D351C0DE0000000000000106 /* DigitTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitTile.swift; sourceTree = "<group>"; };
+		D351C0DE0000000000000108 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		D351C0DE000000000000010A /* EatBiteBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatBiteBadge.swift; sourceTree = "<group>"; };
+		D351C0DE000000000000010C /* DesignGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignGallery.swift; sourceTree = "<group>"; };
+		D351C0DE000000000000010E /* DesignComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignComponentTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ElMessiri-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ElMessiri-OFL.txt"; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -190,6 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				F0A1C0DE00000000000000B6 /* ProgressComparisonTests.swift */,
+				D351C0DE0000000000000122 /* DesignScreenshotTests.swift */,
+				D351C0DE000000000000010E /* DesignComponentTests.swift */,
 				F0A1C0DE00000000000000E8 /* BundledFontTests.swift */,
 				F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */,
 				F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */,
@@ -219,6 +237,7 @@
 		F0A1C0DE0000000000000075 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D351C0DE0000000000000100 /* Design */,
 				F0A1C0DE0000000000000004 /* ContentView.swift */,
 				F0A1C0DE00000000000000B4 /* ProgressComparisonView.swift */,
 				F0A1C0DE0000000000000072 /* StartView.swift */,
@@ -264,6 +283,19 @@
 				F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		D351C0DE0000000000000100 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				D351C0DE0000000000000102 /* Theme.swift */,
+				D351C0DE0000000000000104 /* Card.swift */,
+				D351C0DE0000000000000106 /* DigitTile.swift */,
+				D351C0DE0000000000000108 /* ButtonStyles.swift */,
+				D351C0DE000000000000010A /* EatBiteBadge.swift */,
+				D351C0DE000000000000010C /* DesignGallery.swift */,
+			);
+			path = Design;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -409,6 +441,12 @@
 				F0A1C0DE0000000000000053 /* GameState.swift in Sources */,
 				F0A1C0DE0000000000000001 /* Numer0nAnalysisApp.swift in Sources */,
 				F0A1C0DE0000000000000003 /* ContentView.swift in Sources */,
+				D351C0DE0000000000000101 /* Theme.swift in Sources */,
+				D351C0DE0000000000000103 /* Card.swift in Sources */,
+				D351C0DE0000000000000105 /* DigitTile.swift in Sources */,
+				D351C0DE0000000000000107 /* ButtonStyles.swift in Sources */,
+				D351C0DE0000000000000109 /* EatBiteBadge.swift in Sources */,
+				D351C0DE000000000000010B /* DesignGallery.swift in Sources */,
 				F0A1C0DE0000000000000071 /* StartView.swift in Sources */,
 				F0A1C0DE0000000000000073 /* GameView.swift in Sources */,
 				F0A1C0DE0000000000000081 /* CallInput.swift in Sources */,
@@ -433,6 +471,8 @@
 			files = (
 				F0A1C0DE00000000000000B5 /* ProgressComparisonTests.swift in Sources */,
 				F0A1C0DE00000000000000C5 /* TutorialPageTests.swift in Sources */,
+				D351C0DE0000000000000121 /* DesignScreenshotTests.swift in Sources */,
+				D351C0DE000000000000010D /* DesignComponentTests.swift in Sources */,
 				F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */,
 				F0A1C0DE00000000000000F1 /* ColorTokenTests.swift in Sources */,
 				F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */,
