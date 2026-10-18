@@ -29,6 +29,40 @@ final class KeyboardDismissUITests: XCTestCase {
         assertDoneButtonDismissesKeyboard(in: app)
     }
 
+    /// 既定の桁数（3 桁）ぶん入力したら、「完了」を押さなくても閉じる。
+    func testTypingFullLengthDismissesKeyboard() {
+        let app = launchGame()
+        let numberField = app.textFields["numberField"]
+        XCTAssertTrue(numberField.waitForExistence(timeout: 5))
+        numberField.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+
+        numberField.typeText("123")
+
+        waitForKeyboardToDisappear(in: app)
+        XCTAssertEqual(numberField.value as? String, "123")
+    }
+
+    /// 「履歴に追加」の後は入力欄が空に戻ってキーボードが開き直し、すぐには閉じない。
+    func testKeyboardStaysOpenAfterAddingToHistory() {
+        let app = launchGame()
+        let numberField = app.textFields["numberField"]
+        XCTAssertTrue(numberField.waitForExistence(timeout: 5))
+        numberField.tap()
+        numberField.typeText("123")
+        waitForKeyboardToDisappear(in: app)
+
+        let addButton = app.buttons["履歴に追加"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 5))
+        addButton.tap()
+
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+        // 開き直した直後に閉じていないことを、しばらく待ってから確かめる。
+        let keyboardGone = expectation(for: NSPredicate(format: "count == 0"), evaluatedWith: app.keyboards)
+        keyboardGone.isInverted = true
+        wait(for: [keyboardGone], timeout: 2)
+    }
+
     /// チュートリアルを出さずに起動し、既定の桁数でゲームを始める。
     private func launchGame() -> XCUIApplication {
         let app = XCUIApplication()
@@ -53,9 +87,13 @@ final class KeyboardDismissUITests: XCTestCase {
         XCTAssertTrue(doneButton.waitForExistence(timeout: 5))
         doneButton.tap()
 
-        let keyboardGone = expectation(for: NSPredicate(format: "count == 0"), evaluatedWith: app.keyboards)
-        wait(for: [keyboardGone], timeout: 5)
+        waitForKeyboardToDisappear(in: app)
         // 閉じても入力した値は残る。
         XCTAssertEqual(numberField.value as? String, "12")
+    }
+
+    private func waitForKeyboardToDisappear(in app: XCUIApplication) {
+        let keyboardGone = expectation(for: NSPredicate(format: "count == 0"), evaluatedWith: app.keyboards)
+        wait(for: [keyboardGone], timeout: 5)
     }
 }

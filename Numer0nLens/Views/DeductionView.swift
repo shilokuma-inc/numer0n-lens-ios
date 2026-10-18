@@ -105,6 +105,13 @@ struct DeductionView: View {
                 .font(.title2.monospacedDigit())
                 .focused($isNumberFieldFocused)
                 .accessibilityIdentifier("numberField")
+                // 桁数ぶん入力したら閉じて、EAT / BITE を選びやすくする。
+                // 「履歴に追加」で空に戻したときは閉じない（開き直したキーボードを残す）。
+                .onChange(of: input.text) { _, newText in
+                    if newText.count >= rule.length {
+                        isNumberFieldFocused = false
+                    }
+                }
             resultPicker(title: "EAT", selection: $input.eat)
             resultPicker(title: "BITE", selection: $input.bite)
             if case let .failure(problem) = validation {
