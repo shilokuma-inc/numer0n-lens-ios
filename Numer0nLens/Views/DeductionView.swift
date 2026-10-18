@@ -46,6 +46,7 @@ struct DeductionView: View {
 
     @State private var input = CallInput()
     @FocusState private var isNumberFieldFocused: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var rule: Rule { deduction.rule }
 
@@ -155,18 +156,30 @@ struct DeductionView: View {
     }
 
     private func resultPicker(kind: EatBitePill.Kind, selection: Binding<Int>) -> some View {
-        HStack(spacing: Spacing.medium) {
-            Label(kind.title, systemImage: kind.symbol)
-                .font(Typography.badge)
-                .foregroundStyle(kind.color)
-                .frame(minWidth: 72, alignment: .leading)
-            Picker(kind.title, selection: selection) {
-                ForEach(0...rule.length, id: \.self) { value in
-                    Text("\(value)").tag(value)
+        let label = Label(kind.title, systemImage: kind.symbol)
+            .font(Typography.badge)
+            .foregroundStyle(kind.color)
+        let picker = Picker(kind.title, selection: selection) {
+            ForEach(0...rule.length, id: \.self) { value in
+                Text("\(value)").tag(value)
+            }
+        }
+        .pickerStyle(.segmented)
+        .labelsHidden()
+        // 大きい文字ではラベルの横にセグメントが収まらないので、ラベルを上に置く。
+        return Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    label
+                    picker
+                }
+            } else {
+                HStack(spacing: Spacing.medium) {
+                    label
+                        .frame(minWidth: 72, alignment: .leading)
+                    picker
                 }
             }
-            .pickerStyle(.segmented)
-            .labelsHidden()
         }
     }
 
@@ -233,12 +246,15 @@ struct HistoryRow: View {
     /// この入力で候補が 0 件になったか。
     var isContradiction = false
 
+    /// 行の番号の幅。2 段に折り返したとき、回答をタイルの頭にそろえる。
+    private static let numberWidth: CGFloat = 20
+
     var body: some View {
         switch entry {
         case let .call(guess, result):
             // 5 桁など横に収まらないときは、回答を次の行に下ろす。
             ViewThatFits(in: .horizontal) {
-                HStack(spacing: Spacing.medium) {
+                HStack(spacing: Spacing.small) {
                     call(guess)
                     Spacer(minLength: 0)
                     answer(result)
@@ -246,8 +262,10 @@ struct HistoryRow: View {
                 VStack(alignment: .leading, spacing: Spacing.small) {
                     call(guess)
                     answer(result)
+                        .padding(.leading, Self.numberWidth + Spacing.small)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
         }
     }
@@ -257,7 +275,7 @@ struct HistoryRow: View {
             Text("\(number)")
                 .font(Typography.display(size: 15, weight: .semibold, relativeTo: .subheadline))
                 .foregroundStyle(Palette.inkSecondary)
-                .frame(minWidth: 20, alignment: .trailing)
+                .frame(minWidth: Self.numberWidth, alignment: .trailing)
                 .accessibilityLabel("\(number) 件目")
             DigitTiles(text: guess.description, size: .small)
         }
@@ -265,7 +283,7 @@ struct HistoryRow: View {
 
     private func answer(_ result: EatBite) -> some View {
         HStack(spacing: Spacing.small) {
-            EatBiteBadge(result: result)
+            EatBiteBadge(result: result, size: .small)
             if isContradiction {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Palette.danger)
