@@ -85,6 +85,17 @@ struct DeductionView: View {
 
             CandidatePreviewSection(candidates: deduction.candidates)
         }
+        // テンキーには return キーが無いので、スクロールとキーボード上の「完了」で閉じられるようにする。
+        .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("完了") {
+                    isNumberFieldFocused = false
+                }
+                .accessibilityIdentifier("keyboardDoneButton")
+            }
+        }
     }
 
     private var inputSection: some View {
@@ -93,6 +104,7 @@ struct DeductionView: View {
                 .keyboardType(.numberPad)
                 .font(.title2.monospacedDigit())
                 .focused($isNumberFieldFocused)
+                .accessibilityIdentifier("numberField")
             resultPicker(title: "EAT", selection: $input.eat)
             resultPicker(title: "BITE", selection: $input.bite)
             if case let .failure(problem) = validation {
