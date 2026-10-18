@@ -10,6 +10,7 @@
 		F0A1C0DE00000000000000E1 /* ElMessiri-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */; };
 		F0A1C0DE00000000000000E3 /* ElMessiri-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */; };
 		F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E8 /* BundledFontTests.swift */; };
+		F0A1C0DE00000000000000F1 /* ColorTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */; };
 		E16164A1275FC679005A8615 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16164A0275FC679005A8615 /* Assets.xcassets */; };
 		E16164AF275FC679005A8615 /* Numer0nLensTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16164AE275FC679005A8615 /* Numer0nLensTests.swift */; };
 		E16164B9275FC679005A8615 /* Numer0nLensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16164B8275FC679005A8615 /* Numer0nLensUITests.swift */; };
@@ -70,6 +71,7 @@
 		F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ElMessiri-OFL.txt"; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E8 /* BundledFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledFontTests.swift; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTokenTests.swift; sourceTree = "<group>"; };
 		E1F0000000000000000000C1 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E1F0000000000000000000C2 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		E1F0000000000000000000C3 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			children = (
 				F0A1C0DE00000000000000B6 /* ProgressComparisonTests.swift */,
 				F0A1C0DE00000000000000E8 /* BundledFontTests.swift */,
+				F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */,
 				F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */,
 				F0A1C0DE0000000000000056 /* GameStateTests.swift */,
 				F0A1C0DE0000000000000086 /* CallInputTests.swift */,
@@ -431,6 +434,7 @@
 				F0A1C0DE00000000000000B5 /* ProgressComparisonTests.swift in Sources */,
 				F0A1C0DE00000000000000C5 /* TutorialPageTests.swift in Sources */,
 				F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */,
+				F0A1C0DE00000000000000F1 /* ColorTokenTests.swift in Sources */,
 				F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */,
 				F0A1C0DE0000000000000085 /* CallInputTests.swift in Sources */,
 				F0A1C0DE0000000000000043 /* BestMoveTests.swift in Sources */,
