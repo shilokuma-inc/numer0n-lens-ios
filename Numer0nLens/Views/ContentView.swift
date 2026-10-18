@@ -49,8 +49,11 @@ struct ContentView: View {
                     hasSeenTutorial = true
                     isShowingTutorial = false
                 }
+                .limitedDynamicTypeSize()
             }
         )
+        // 文字サイズの上限はアプリ全体（チュートリアルの全画面表示も含む）にかける。
+        .limitedDynamicTypeSize()
     }
 
     /// 起動時にチュートリアルを自動で出すか。
