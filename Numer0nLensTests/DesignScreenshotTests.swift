@@ -39,12 +39,12 @@ final class DesignScreenshotTests: XCTestCase {
         try await attachScreen(GameView(game: game) {}, name: "deduction-five", styles: [.light])
     }
 
-    /// 文字サイズを大きくしたとき（アクセシビリティサイズ）の見え方。
+    /// 端末の文字サイズを最大（AX5）にしたときの見え方。アプリの上限（`TextSizeLimit.maximum`）で止まること。
     /// 1 枚の高さには上限があり（約 2,700pt を超えると真っ白になる）、入力欄までを撮る。
     func testDeductionScreenWithLargeText() async throws {
         let game = try Self.game(digitCount: .three, answer: "407", calls: ["123", "456"])
         try await attachScreen(
-            GameView(game: game) {}.environment(\.dynamicTypeSize, .accessibility2),
+            GameView(game: game) {}.limitedDynamicTypeSize().environment(\.dynamicTypeSize, .accessibility5),
             name: "deduction-large-text",
             styles: [.light]
         )
@@ -55,7 +55,9 @@ final class DesignScreenshotTests: XCTestCase {
         let game = try Self.game(digitCount: .four, answer: "4071", calls: ["1234", "5678"])
         let deduction = game.myDeduction
         try await attachScreen(
-            DeductionView(deduction: deduction, role: .opponent).environment(\.dynamicTypeSize, .accessibility2),
+            DeductionView(deduction: deduction, role: .opponent)
+                .limitedDynamicTypeSize()
+                .environment(\.dynamicTypeSize, .accessibility5),
             name: "deduction-large-text-history",
             styles: [.light]
         )

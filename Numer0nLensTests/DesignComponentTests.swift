@@ -48,4 +48,15 @@ final class DesignComponentTests: XCTestCase {
         XCTAssertNotNil(UIImage(systemName: eat.symbol))
         XCTAssertNotNil(UIImage(systemName: bite.symbol))
     }
+
+    /// アプリの言語が日本語であること。英語のままだと、漢字が中国語の字形で描かれる。
+    func testAppLanguageIsJapanese() {
+        XCTAssertEqual(Bundle.main.preferredLocalizations.first, "ja")
+        XCTAssertEqual(Bundle.main.developmentLocalization, "ja")
+    }
+
+    /// 文字サイズの上限が、画面の組み方が崩れるアクセシビリティサイズより手前にあること。
+    func testTextSizeLimitStopsBeforeAccessibilitySizes() {
+        XCTAssertFalse(TextSizeLimit.maximum.isAccessibilitySize)
+    }
 }
