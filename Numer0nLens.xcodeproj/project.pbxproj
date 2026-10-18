@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F0A1C0DE00000000000000E1 /* ElMessiri-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */; };
+		F0A1C0DE00000000000000E3 /* ElMessiri-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */; };
 		E16164A1275FC679005A8615 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16164A0275FC679005A8615 /* Assets.xcassets */; };
 		E16164AF275FC679005A8615 /* Numer0nLensTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16164AE275FC679005A8615 /* Numer0nLensTests.swift */; };
 		E16164B9275FC679005A8615 /* Numer0nLensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16164B8275FC679005A8615 /* Numer0nLensUITests.swift */; };
@@ -63,6 +65,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ElMessiri-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ElMessiri-OFL.txt"; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1F0000000000000000000C1 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E1F0000000000000000000C2 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		E1F0000000000000000000C3 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -171,6 +176,8 @@
 				F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */,
 				F0A1C0DE0000000000000075 /* Views */,
 				E16164A0275FC679005A8615 /* Assets.xcassets */,
+				F0A1C0DE00000000000000E5 /* Fonts */,
+				F0A1C0DE00000000000000E6 /* Info.plist */,
 			);
 			path = Numer0nLens;
 			sourceTree = "<group>";
@@ -242,6 +249,15 @@
 				F0A1C0DE0000000000000034 /* CandidateFilter.swift */,
 			);
 			path = Logic;
+			sourceTree = "<group>";
+		};
+		F0A1C0DE00000000000000E5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */,
+				F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,6 +371,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16164A1275FC679005A8615 /* Assets.xcassets in Resources */,
+				F0A1C0DE00000000000000E1 /* ElMessiri-VariableFont_wght.ttf in Resources */,
+				F0A1C0DE00000000000000E3 /* ElMessiri-OFL.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +600,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Numer0nLens/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -608,6 +627,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Numer0nLens/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
