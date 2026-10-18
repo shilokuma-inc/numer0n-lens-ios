@@ -12,6 +12,7 @@
 		D351C0DE0000000000000105 /* DigitTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000106 /* DigitTile.swift */; };
 		D351C0DE0000000000000107 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000108 /* ButtonStyles.swift */; };
 		D351C0DE0000000000000109 /* EatBiteBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE000000000000010A /* EatBiteBadge.swift */; };
+		D351C0DE000000000000010B /* DesignGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE000000000000010C /* DesignGallery.swift */; };
 		F0A1C0DE00000000000000E1 /* ElMessiri-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */; };
 		F0A1C0DE00000000000000E3 /* ElMessiri-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */; };
 		F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E8 /* BundledFontTests.swift */; };
@@ -77,6 +78,7 @@
 		D351C0DE0000000000000106 /* DigitTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitTile.swift; sourceTree = "<group>"; };
 		D351C0DE0000000000000108 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		D351C0DE000000000000010A /* EatBiteBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatBiteBadge.swift; sourceTree = "<group>"; };
+		D351C0DE000000000000010C /* DesignGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignGallery.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E2 /* ElMessiri-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ElMessiri-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ElMessiri-OFL.txt"; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				D351C0DE0000000000000106 /* DigitTile.swift */,
 				D351C0DE0000000000000108 /* ButtonStyles.swift */,
 				D351C0DE000000000000010A /* EatBiteBadge.swift */,
+				D351C0DE000000000000010C /* DesignGallery.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				D351C0DE0000000000000105 /* DigitTile.swift in Sources */,
 				D351C0DE0000000000000107 /* ButtonStyles.swift in Sources */,
 				D351C0DE0000000000000109 /* EatBiteBadge.swift in Sources */,
+				D351C0DE000000000000010B /* DesignGallery.swift in Sources */,
 				F0A1C0DE0000000000000071 /* StartView.swift in Sources */,
 				F0A1C0DE0000000000000073 /* GameView.swift in Sources */,
 				F0A1C0DE0000000000000081 /* CallInput.swift in Sources */,
