@@ -5,6 +5,9 @@
 
 import SwiftUI
 
+// 見本はリリース版のアプリに入れない（テストは Debug でビルドするので使える）。
+#if DEBUG
+
 /// 共通部品の見本（Xcode のプレビューとスクリーンショットで確かめるためのもの。アプリの画面からは出さない）。
 struct DesignGallery: View {
     var body: some View {
@@ -59,3 +62,5 @@ struct DesignGalleryContent: View {
     DesignGallery()
         .preferredColorScheme(.dark)
 }
+
+#endif
