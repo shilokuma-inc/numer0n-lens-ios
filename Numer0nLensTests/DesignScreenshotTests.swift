@@ -27,6 +27,21 @@ final class DesignScreenshotTests: XCTestCase {
         }
     }
 
+    /// スタートの画面（既定の 3 桁を選んだ状態）。
+    func testStartScreen() async throws {
+        try await attachScreen(StartView { _ in }, name: "start", height: 852)
+    }
+
+    /// 端末の文字サイズを最大（AX5）にしたスタートの画面。アプリの上限（`TextSizeLimit.maximum`）で止まること。
+    func testStartScreenWithLargeText() async throws {
+        try await attachScreen(
+            StartView { _ in }.limitedDynamicTypeSize().environment(\.dynamicTypeSize, .accessibility5),
+            name: "start-large-text",
+            styles: [.light],
+            height: 852
+        )
+    }
+
     /// 推理の画面（自分の推理・3 桁・履歴 3 件）。
     func testDeductionScreen() async throws {
         let game = try Self.game(digitCount: .three, answer: "407", calls: ["123", "456", "780"])
