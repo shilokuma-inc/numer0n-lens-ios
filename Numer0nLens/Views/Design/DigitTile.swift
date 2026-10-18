@@ -47,7 +47,7 @@ struct DigitTile: View {
         Text(digit.map { String($0) } ?? " ")
             .font(Typography.display(size: size.digitSize, relativeTo: size.textStyle))
             .foregroundStyle(Palette.ink)
-            // 枠の最小の大きさは固定し、文字サイズの設定で数字が大きくなった分は余白ごと広げる
+            // 枠の最小の大きさは固定し、文字サイズの設定で数字が最小の枠より大きくなったら、枠は数字に合わせて広がる
             // （枠も倍率で広げると、数字より枠の伸びが大きくなり画面からはみ出すため）。
             .frame(minWidth: size.digitSize * 1.2, minHeight: size.digitSize * 1.5)
             .padding(.horizontal, Spacing.extraSmall)
@@ -93,9 +93,12 @@ struct DigitTiles: View {
     /// VoiceOver で 1 桁ずつ読ませる（「123」を「百二十三」と読ませない）。
     /// 桁数に足りないときは、画面の点線の枠の代わりに残りの桁数を読む。
     static func accessibilityText(for text: String, length: Int? = nil) -> String {
-        let digits = text.isEmpty ? "未入力" : text.map(String.init).joined(separator: " ")
         let missing = (length ?? 0) - text.count
-        return missing > 0 && !text.isEmpty ? "\(digits)、残り \(missing) 桁" : digits
+        if text.isEmpty {
+            return missing > 0 ? "未入力、\(missing) 桁" : "未入力"
+        }
+        let digits = text.map(String.init).joined(separator: " ")
+        return missing > 0 ? "\(digits)、残り \(missing) 桁" : digits
     }
 }
 

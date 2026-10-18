@@ -382,11 +382,12 @@
 			};
 			buildConfigurationList = E161648F275FC677005A8615 /* Build configuration list for PBXProject "Numer0nLens" */;
 			compatibilityVersion = "Xcode 13.0";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = E161648B275FC677005A8615;
 			packageReferences = (
