@@ -42,8 +42,10 @@ final class TutorialPageTests: XCTestCase {
 
     func testPageIndicatorReadsPosition() {
         let pages = TutorialPage.Kind.allCases
-        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .overview), "6 ページ中 1 ページ目")
-        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .trouble), "6 ページ中 6 ページ目")
+        let count = pages.count
+        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .overview), "\(count) ページ中 1 ページ目")
+        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .rule), "\(count) ページ中 2 ページ目")
+        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .trouble), "\(count) ページ中 \(count) ページ目")
     }
 }
 
