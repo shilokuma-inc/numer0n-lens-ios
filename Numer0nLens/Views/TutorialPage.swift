@@ -23,6 +23,18 @@ struct TutorialPage: Identifiable, Hashable {
 }
 
 extension TutorialPage {
+    /// ルールのページの例。本文の「例:」と同じ内容を、数字タイルとバッジでも見せる。
+    struct RuleExample: Sendable {
+        /// 相手の数。
+        let answer: String
+        /// コールした数。
+        let call: String
+        /// 回答。
+        let result: EatBite
+    }
+
+    static let ruleExample = RuleExample(answer: "123", call: "135", result: EatBite(eat: 1, bite: 1))
+
     /// 表示する順番に並べたページ。ルールの説明は 1 枚にとどめ、残りはアプリの使い方に充てる。
     static let all: [Self] = [
         Self(

@@ -145,6 +145,36 @@ final class DesignScreenshotTests: XCTestCase {
         )
     }
 
+    /// チュートリアル（1 ページ目）。
+    func testTutorialScreen() async throws {
+        try await attachScreen(TutorialView {}, name: "tutorial", height: 852)
+    }
+
+    /// 最大の文字サイズのチュートリアル。「スキップ」・位置・主ボタンとページが 1 画面に収まり、上限で止まること。
+    func testTutorialScreenWithLargeText() async throws {
+        try await attachScreen(
+            TutorialView {}.environment(\.dynamicTypeSize, .accessibility5),
+            name: "tutorial-large-text",
+            styles: [.light],
+            height: 852
+        )
+    }
+
+    /// ルールのページ（数字タイルとバッジの例）と、最大の文字サイズでの見え方。
+    func testTutorialRulePage() async throws {
+        let page = try XCTUnwrap(TutorialPage.all.first { $0.id == .rule })
+        try await attachScreen(TutorialPageView(page: page).paperBackground(), name: "tutorial-rule", height: 1_200)
+        try await attachScreen(
+            TutorialPageView(page: page)
+                .paperBackground()
+                .limitedDynamicTypeSize()
+                .environment(\.dynamicTypeSize, .accessibility5),
+            name: "tutorial-rule-large-text",
+            styles: [.light],
+            height: 1_600
+        )
+    }
+
     /// 履歴を入れたゲーム。回答は `answer` に対する判定で作る。
     private static func game(digitCount: DigitCount, answer: String, calls: [String]) throws -> GameState {
         let game = GameState(digitCount: digitCount)
