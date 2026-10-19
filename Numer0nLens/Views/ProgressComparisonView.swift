@@ -10,18 +10,21 @@ struct ProgressComparisonView: View {
     let comparison: ProgressComparison
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text(headline)
-                .font(.headline)
+        VStack(spacing: Spacing.small) {
+            Label(headline, systemImage: headlineSymbol)
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(headlineColor)
-            HStack(spacing: 12) {
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: Spacing.medium) {
                 side(
                     title: "自分 → 相手の数字",
                     remaining: comparison.myRemaining,
                     bits: comparison.myRemainingBits,
                     solved: comparison.iSolved
                 )
-                Divider()
+                Palette.line
+                    .frame(width: 1)
                 side(
                     title: "相手 → 自分の数字",
                     remaining: comparison.opponentRemaining,
@@ -31,24 +34,47 @@ struct ProgressComparisonView: View {
             }
             .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(12)
+        .padding(.horizontal, Spacing.medium)
+        .padding(.vertical, Spacing.small)
         .frame(maxWidth: .infinity)
-        .background(.fill.quaternary, in: RoundedRectangle(cornerRadius: 12))
+        .background {
+            // 見本のカードと同じ面・枠・厚み。上部は場所が限られるので、余白と角丸だけ小さくする。
+            RoundedRectangle(cornerRadius: Radius.tile, style: .continuous)
+                .fill(Palette.card)
+                .shadow(color: Palette.tileEdge.opacity(0.6), radius: 0, x: 0, y: 2)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: Radius.tile, style: .continuous)
+                .strokeBorder(Palette.line, lineWidth: 1)
+        }
         .accessibilityElement(children: .combine)
     }
 
     private func side(title: String, remaining: Int, bits: Double, solved: Bool) -> some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 0) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(solved ? "当てた" : "残り \(remaining.formatted()) 通り")
-                .font(.title3.monospacedDigit())
-            if !solved {
+                .foregroundStyle(Palette.inkSecondary)
+            if solved {
+                Label("当てた", systemImage: "checkmark.seal.fill")
+                    .font(.headline)
+                    .foregroundStyle(Palette.success)
+                    .padding(.vertical, Spacing.extraSmall)
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: Spacing.extraSmall) {
+                    Text("残り")
+                        .font(.caption)
+                    Text(remaining.formatted())
+                        .font(Typography.display(size: 24, weight: .semibold, relativeTo: .title2))
+                        .contentTransition(.numericText())
+                    Text("通り")
+                        .font(.caption)
+                }
+                .foregroundStyle(Palette.ink)
                 // 候補 0 件（入力が矛盾）は情報量を出せないので、1 件（0 bit）と紛れないよう別の文言にする。
                 Text(remaining > 0 ? "あと約 \(bits.formatted(.number.precision(.fractionLength(1)))) bit" : "候補なし（入力が矛盾）")
                     .font(.caption2)
-                    .foregroundStyle(remaining > 0 ? AnyShapeStyle(.secondary) : AnyShapeStyle(.red))
+                    .foregroundStyle(remaining > 0 ? Palette.inkSecondary : Palette.danger)
             }
         }
         .frame(maxWidth: .infinity)
@@ -66,16 +92,34 @@ struct ProgressComparisonView: View {
         }
     }
 
+    /// 色だけに頼らず、記号でもどちらが優勢かを示す。
+    private var headlineSymbol: String {
+        switch comparison.status {
+        case .iSolved, .bothSolved: "checkmark.seal.fill"
+        case .opponentSolved: "flag.fill"
+        case .undetermined: "exclamationmark.triangle.fill"
+        case .inProgress(.me): "arrow.up.right.circle.fill"
+        case .inProgress(.opponent): "arrow.down.right.circle.fill"
+        case .inProgress(.even): "equal.circle.fill"
+        }
+    }
+
     private var headlineColor: Color {
         switch comparison.status {
-        case .iSolved, .inProgress(.me): .green
-        case .opponentSolved, .inProgress(.opponent): .orange
-        case .bothSolved, .undetermined, .inProgress(.even): .primary
+        case .iSolved, .inProgress(.me): Palette.success
+        case .opponentSolved, .inProgress(.opponent): Palette.warning
+        case .undetermined: Palette.danger
+        case .bothSolved, .inProgress(.even): Palette.ink
         }
     }
 }
 
 #Preview {
-    ProgressComparisonView(comparison: ProgressComparison(myRemaining: 12, opponentRemaining: 40))
-        .padding()
+    VStack(spacing: Spacing.large) {
+        ProgressComparisonView(comparison: ProgressComparison(myRemaining: 12, opponentRemaining: 40))
+        ProgressComparisonView(comparison: ProgressComparison(myRemaining: 1, opponentRemaining: 0, iSolved: true))
+        ProgressComparisonView(comparison: ProgressComparison(myRemaining: 0, opponentRemaining: 40))
+    }
+    .padding()
+    .paperBackground()
 }
