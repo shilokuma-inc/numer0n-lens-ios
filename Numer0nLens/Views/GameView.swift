@@ -11,9 +11,16 @@ struct GameView: View {
     /// 桁数を選び直すとき（スタート画面に戻るとき）に呼ぶ。
     let onChooseDigitCount: () -> Void
 
-    @State private var side: Side = .mine
+    @State private var side: Side
     @State private var isConfirmingRestart = false
     @State private var isShowingTutorial = false
+
+    /// - Parameter initialSide: 最初に開く側。ふだんは自分の推理で、撮影モード（`ScreenshotDemo`）では相手の推理も開く。
+    init(game: GameState, initialSide: Side = .mine, onChooseDigitCount: @escaping () -> Void) {
+        self.game = game
+        self.onChooseDigitCount = onChooseDigitCount
+        _side = State(initialValue: initialSide)
+    }
 
     enum Side: Hashable, CaseIterable {
         case mine
