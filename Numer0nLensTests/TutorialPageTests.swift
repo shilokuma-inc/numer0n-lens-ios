@@ -29,6 +29,22 @@ final class TutorialPageTests: XCTestCase {
         let rulePage = try XCTUnwrap(TutorialPage.all.first { $0.id == .rule })
         XCTAssertTrue(rulePage.paragraphs.contains { $0.contains("123") && $0.contains("135") && $0.contains(result.description) })
     }
+
+    /// 数字タイルとバッジで見せる例が、本文の例・判定と食い違わないこと。
+    func testRuleExampleTilesMatchJudge() throws {
+        let rule = Rule(digitCount: .three)
+        let example = TutorialPage.ruleExample
+        let result = judge(guess: try Numer0nNumber(example.call, rule: rule), answer: try Numer0nNumber(example.answer, rule: rule))
+        XCTAssertEqual(example.result, result)
+        XCTAssertEqual(example.answer, "123")
+        XCTAssertEqual(example.call, "135")
+    }
+
+    func testPageIndicatorReadsPosition() {
+        let pages = TutorialPage.Kind.allCases
+        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .overview), "6 ページ中 1 ページ目")
+        XCTAssertEqual(TutorialPageIndicator.accessibilityText(pages: pages, selection: .trouble), "6 ページ中 6 ページ目")
+    }
 }
 
 final class TutorialLaunchTests: XCTestCase {
