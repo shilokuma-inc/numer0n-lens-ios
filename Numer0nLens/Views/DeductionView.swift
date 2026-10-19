@@ -81,10 +81,7 @@ struct DeductionView: View {
 
                 historyCard
 
-                // 残り候補の見た目は後続のタスクで作り直す。ここではカードに載せるだけにする。
-                Card {
-                    CandidatePreviewSection(candidates: deduction.candidates)
-                }
+                CandidatePreviewSection(candidates: deduction.candidates)
             }
             .padding(Spacing.large)
         }
