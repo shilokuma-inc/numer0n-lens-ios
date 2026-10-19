@@ -126,15 +126,55 @@ Archive / Upload は App Store Connect API Key で認証します。以下はリ
 3. **App Store Connect のアプリ**: Bundle ID `jp.shilokuma.Numer0nLens` のアプリを Web 画面で作成します（API では作れません）。
    アプリが無いまま Upload が走ると、[.github/scripts/check-app-store-app.rb](.github/scripts/check-app-store-app.rb) が「新規アプリ」画面に入力する値を Job Summary に出して止まります
 
+## App Store の掲載情報（スクリーンショット・説明文・ヘッダー）
+
+App Store のプロダクトページに載せるものは、`AppStore/` の JSON を元ネタにして、手動実行のワークフローで App Store Connect に反映します（[template-app-ios](https://github.com/shilokuma-inc/template-app-ios) から移植）。
+反映先は「編集できる状態のバージョン」だけで、審査中・配信済みのバージョンには触りません。
+どのワークフローも、リポジトリ変数 `ENABLE_DELIVERY=false` のときは反映しません。
+
+| ワークフロー | 反映するもの | 元ネタ | ランナー |
+|---|---|---|---|
+| `Screenshots/App Store` | スクリーンショット（iPhone 6.9 inch / 6.3 inch / iPad 13 inch / iPhone Duo） | `AppStore/screenshots.json` / `AppStore/languages.json` / `AppStore/app.json` | 撮影だけ macOS、縮小と反映は ubuntu |
+| `Metadata/App Store` | 説明文・キーワード・プロモーションテキスト・最新情報・URL（既定は dry-run） | `AppStore/metadata/*.json` | ubuntu |
+| `Creative assets/App Store` | プロダクトページのヘッダーと検索結果のクリエイティブアセット（既定は dry-run） | `AppStore/creative_assets.json` / `AppStore/creative/<言語>/` | ubuntu |
+| `Verify/App Store metadata` | PR で、文字数の上限・撮影設定・撮影モードの Scene との対応を検査する | `AppStore/**` | ubuntu |
+
+- 言語は日本語だけです（アプリの文言が日本語だけのため。[AppStore/languages.json](AppStore/languages.json)）
+- リリースのときは、`release/x.y.z` を切ってから、そのブランチを選んで `Screenshots/App Store` → `Metadata/App Store`（dry-run で差分を見てから本番）の順に流します
+
+**スクリーンショット**
+
+- 撮影はアプリの撮影モード（[Numer0nLens/Screenshot/ScreenshotDemo.swift](Numer0nLens/Screenshot/ScreenshotDemo.swift)）で行います。`Tools/capture_screenshots.sh` が `-screenshot-demo -screenshot-scene <名前>` と言語を起動引数で渡し、アプリはデモデータ（3 桁のゲームの途中など）で目的の画面を開きます
+- 撮る画面: 自分の推理 → 相手の推理 → 残り候補の全件 → スタート → チュートリアル（[AppStore/screenshots.json](AppStore/screenshots.json) の `scenes` の順）
+- 画面を足すときは、`ScreenshotDemo.Scene` に case を足し、`Numer0nAnalysisApp.swift` の `rootView` で開く画面を返し、`AppStore/screenshots.json` の `scenes` に同じ名前を足します（1 表示サイズにつき 10 枚まで）
+- 撮るのはリリースのときだけです。`release/**` ブランチを選んで手動実行します（それ以外のブランチでは止まります）
+- macOS ランナーの枠を開発のビルドと取り合わないよう、撮影は 1 本ずつ流します。6.3 inch（`deriveFrom`）は撮らずに 6.9 inch を ubuntu で縮めて作り、App Store Connect への反映も ubuntu で行います
+- iPhone Duo は Xcode 27.1 と iOS 27.1 のランタイムが要るので、`xcode-27` のランナーで撮ります（`screenshots.json` の `runsOn` / `xcodeVersion`）
+- 手元で撮るなら `SKIP_PACKAGE_PLUGIN_VALIDATION=1 Tools/capture_screenshots.sh APP_IPHONE_67 ja`（出力は `build/screenshots/`）
+
+**説明文・最新情報**
+
+- `AppStore/metadata/ja.json` と `shared.json` に書きます。仮の文言（`TODO:`）が残っているあいだは反映できません
+- 「このバージョンの最新情報」は `whatsNew` に `{"version": "1.1.0", "text": "…"}` の形で書きます。`version` が反映先のバージョンと一致するときだけ書き込むので、リリースごとに両方を書き換えます（最初のバージョンには最新情報の欄がありません）
+
+**プロダクトページのヘッダーと検索結果**（[App Store asset best practices](https://developer.apple.com/app-store/asset-best-practices/)）
+
+- iOS 27 / iPadOS 27 以降の App Store では、スクリーンショットとは別に、プロダクトページのヘッダー（21:9、3840x1646）と検索結果（3:2、3840x2560）に画像を載せられます
+- 元は [AppStore/creative/src/creative.html](AppStore/creative/src/creative.html)。色と文言（`TODO:`）をアプリに合わせて書き換え、6.9 inch のスクリーンショットを撮ってから `Tools/render_creative_assets.sh build/screenshots/APP_IPHONE_67 "Numer0n Lens"` で書き出し（Google Chrome を使います）、画像もコミットします
+- `Creative assets/App Store` を `ref-data` → `dry-run` → `upload` の順に流して反映します
+- 反映したら、App Store Connect のプレビューで iPhone / iPad の見え方を確かめてから審査に出します
+
 ## 構成
 
 ```
 .
+├── AppStore/                # App Store の掲載情報の元ネタ（撮影設定・言語・説明文・クリエイティブアセット）
 ├── Configs/                 # xcconfig（署名情報・バージョン・Deployment Target）
-├── Numer0nLens/             # アプリ本体（SwiftUI。Logic/・Model/・Views/）
+├── Numer0nLens/             # アプリ本体（SwiftUI。Logic/・Model/・Views/・Screenshot/）
 ├── Numer0nLensTests/        # Unit テスト（XCTest）
 ├── Numer0nLensUITests/      # UI テスト（XCTest）
 ├── Numer0nLens.xcodeproj    # 共有スキーム Numer0nLens を含む
+├── Tools/                   # App Store の掲載情報の撮影・検査・反映のスクリプト
 ├── docs/                    # ExportOptions.plist のサンプル
 ├── .swiftlint.yml           # SwiftLint 設定
 └── .github/
@@ -145,5 +185,9 @@ Archive / Upload は App Store Connect API Key で認証します。以下はリ
         ├── build.yml        # 全ブランチの push / PR
         ├── archive.yml      # main の push
         ├── upload.yml       # develop / release/** の push
+        ├── app-store-screenshots.yml        # スクリーンショットの撮影と反映（release/** から手動）
+        ├── app-store-metadata.yml           # 説明文などの反映（手動）
+        ├── app-store-creative-assets.yml    # ヘッダーと検索結果の反映（手動）
+        ├── verify-app-store-metadata.yml    # PR で AppStore/ を検査
         └── close-goal-discussion.yml  # epic の最終 PR のマージでゴール元の Discussion を閉じる
 ```
