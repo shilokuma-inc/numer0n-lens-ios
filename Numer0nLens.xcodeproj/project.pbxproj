@@ -33,6 +33,7 @@
 		F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000056 /* GameStateTests.swift */; };
 		F0A1C0DE0000000000000001 /* Numer0nAnalysisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */; };
 		F0A1C0DE0000000000000071 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000072 /* StartView.swift */; };
+		D351C0DE0000000000000131 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000132 /* LicenseView.swift */; };
 		F0A1C0DE00000000000000C1 /* TutorialPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C2 /* TutorialPage.swift */; };
 		F0A1C0DE00000000000000C3 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C4 /* TutorialView.swift */; };
 		F0A1C0DE00000000000000C5 /* TutorialPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */; };
@@ -108,6 +109,7 @@
 		F0A1C0DE0000000000000056 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numer0nAnalysisApp.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000072 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		D351C0DE0000000000000132 /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000C2 /* TutorialPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPage.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000C4 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageTests.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				F0A1C0DE0000000000000004 /* ContentView.swift */,
 				F0A1C0DE00000000000000B4 /* ProgressComparisonView.swift */,
 				F0A1C0DE0000000000000072 /* StartView.swift */,
+				D351C0DE0000000000000132 /* LicenseView.swift */,
 				F0A1C0DE0000000000000074 /* GameView.swift */,
 				F0A1C0DE0000000000000084 /* DeductionView.swift */,
 				F0A1C0DE0000000000000092 /* CandidateListView.swift */,
@@ -449,6 +452,7 @@
 				D351C0DE0000000000000109 /* EatBiteBadge.swift in Sources */,
 				D351C0DE000000000000010B /* DesignGallery.swift in Sources */,
 				F0A1C0DE0000000000000071 /* StartView.swift in Sources */,
+				D351C0DE0000000000000131 /* LicenseView.swift in Sources */,
 				F0A1C0DE0000000000000073 /* GameView.swift in Sources */,
 				F0A1C0DE0000000000000081 /* CallInput.swift in Sources */,
 				F0A1C0DE0000000000000083 /* DeductionView.swift in Sources */,

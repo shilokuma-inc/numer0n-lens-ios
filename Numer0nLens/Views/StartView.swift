@@ -29,6 +29,9 @@ struct StartView: View {
                     onStart(digitCount)
                 }
                 .buttonStyle(.primary)
+
+                // 同梱したフォントの著作権表示とライセンス（SIL OFL）を読めるようにする。
+                LicenseLink()
             }
             .padding(Spacing.large)
         }

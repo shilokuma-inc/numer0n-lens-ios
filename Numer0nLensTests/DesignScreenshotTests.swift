@@ -69,6 +69,11 @@ final class DesignScreenshotTests: XCTestCase {
         }
     }
 
+    /// フォントのライセンスの画面（先頭）。
+    func testLicenseScreen() async throws {
+        try await attachScreen(LicenseView(), name: "license", height: 852)
+    }
+
     /// 推理の画面（自分の推理・3 桁・履歴 3 件）。
     func testDeductionScreen() async throws {
         let game = try Self.game(digitCount: .three, answer: "407", calls: ["123", "456", "780"])
