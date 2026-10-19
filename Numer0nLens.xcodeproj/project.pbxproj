@@ -31,6 +31,7 @@
 		F0A1C0DE0000000000000051 /* Deduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000052 /* Deduction.swift */; };
 		F0A1C0DE0000000000000053 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000054 /* GameState.swift */; };
 		F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000056 /* GameStateTests.swift */; };
+		5C2EE0DE0000000000000001 /* ScreenshotDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2EE0DE0000000000000002 /* ScreenshotDemo.swift */; };
 		F0A1C0DE0000000000000001 /* Numer0nAnalysisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */; };
 		F0A1C0DE0000000000000071 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE0000000000000072 /* StartView.swift */; };
 		D351C0DE0000000000000131 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351C0DE0000000000000132 /* LicenseView.swift */; };
@@ -107,6 +108,7 @@
 		F0A1C0DE0000000000000052 /* Deduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deduction.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000054 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000056 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
+		5C2EE0DE0000000000000002 /* ScreenshotDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDemo.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numer0nAnalysisApp.swift; sourceTree = "<group>"; };
 		F0A1C0DE0000000000000072 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		D351C0DE0000000000000132 /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				F0A1C0DE0000000000000017 /* Logic */,
 				F0A1C0DE0000000000000057 /* Model */,
 				F0A1C0DE0000000000000002 /* Numer0nAnalysisApp.swift */,
+				5C2EE0DE0000000000000003 /* Screenshot */,
 				F0A1C0DE0000000000000075 /* Views */,
 				E16164A0275FC679005A8615 /* Assets.xcassets */,
 				F0A1C0DE00000000000000E5 /* Fonts */,
@@ -286,6 +289,14 @@
 				F0A1C0DE00000000000000E4 /* ElMessiri-OFL.txt */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		5C2EE0DE0000000000000003 /* Screenshot */ = {
+			isa = PBXGroup;
+			children = (
+				5C2EE0DE0000000000000002 /* ScreenshotDemo.swift */,
+			);
+			path = Screenshot;
 			sourceTree = "<group>";
 		};
 		D351C0DE0000000000000100 /* Design */ = {
@@ -444,6 +455,7 @@
 				F0A1C0DE0000000000000051 /* Deduction.swift in Sources */,
 				F0A1C0DE0000000000000053 /* GameState.swift in Sources */,
 				F0A1C0DE0000000000000001 /* Numer0nAnalysisApp.swift in Sources */,
+				5C2EE0DE0000000000000001 /* ScreenshotDemo.swift in Sources */,
 				F0A1C0DE0000000000000003 /* ContentView.swift in Sources */,
 				D351C0DE0000000000000101 /* Theme.swift in Sources */,
 				D351C0DE0000000000000103 /* Card.swift in Sources */,
