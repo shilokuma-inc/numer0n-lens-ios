@@ -122,6 +122,29 @@ final class DesignScreenshotTests: XCTestCase {
         )
     }
 
+    /// 残り候補の全件の画面（5 桁・30,240 通り）。遅延表示のグリッドで先頭から並ぶこと。
+    func testCandidateListScreen() async throws {
+        let candidates = Rule(digitCount: .five).allNumbers()
+        try await attachScreen(CandidateListView(candidates: candidates), name: "candidate-list", height: 852)
+    }
+
+    /// 最大の文字サイズの残り候補のカード（5 桁）。セルの数字が枠からはみ出さないこと。
+    func testCandidatePreviewWithLargeText() async throws {
+        let candidates = Rule(digitCount: .five).allNumbers()
+        try await attachScreen(
+            ScrollView {
+                CandidatePreviewSection(candidates: candidates)
+                    .padding(Spacing.large)
+            }
+            .paperBackground()
+            .limitedDynamicTypeSize()
+            .environment(\.dynamicTypeSize, .accessibility5),
+            name: "candidate-preview-large-text",
+            styles: [.light],
+            height: 1_400
+        )
+    }
+
     /// 履歴を入れたゲーム。回答は `answer` に対する判定で作る。
     private static func game(digitCount: DigitCount, answer: String, calls: [String]) throws -> GameState {
         let game = GameState(digitCount: digitCount)
