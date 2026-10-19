@@ -22,10 +22,15 @@ struct TutorialView: View {
         VStack(spacing: 0) {
             HStack {
                 Spacer()
-                Button("スキップ", action: onFinish)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Palette.brand)
-                    .frame(minHeight: 44)
+                Button(action: onFinish) {
+                    // 押せる範囲を高さ 44pt にするため、枠はラベルの中で取る。
+                    Text("スキップ")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Palette.brand)
+                        .frame(minHeight: 44)
+                        .padding(.horizontal, Spacing.small)
+                        .contentShape(Rectangle())
+                }
                     .accessibilityIdentifier("tutorialSkipButton")
                     .opacity(isLastPage ? 0 : 1)
                     .disabled(isLastPage)
@@ -155,14 +160,23 @@ struct TutorialRuleExample: View {
         VStack(alignment: .leading, spacing: Spacing.small) {
             row(title: "相手の数", text: TutorialPage.ruleExample.answer)
             row(title: "コール", text: TutorialPage.ruleExample.call)
-            EatBiteBadge(result: TutorialPage.ruleExample.result)
-                .padding(.leading, titleWidth + Spacing.small)
+            // 大きい文字で横に収まらないときは、左の余白を外して並べる（余白は縮まないので、バッジの文字が折り返して崩れる）。
+            ViewThatFits(in: .horizontal) {
+                badge
+                    .padding(.leading, titleWidth + Spacing.small)
+                badge
+            }
         }
         .padding(Spacing.medium)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Palette.paper, in: RoundedRectangle(cornerRadius: Radius.tile, style: .continuous))
-        // 下の本文の「例:」と同じ内容なので、読み上げは 1 つにまとめる。
+        // 例を 1 つの要素として、1 桁ずつ読ませる（本文の「例:」の文も続けて読まれる）。
         .accessibilityElement(children: .combine)
+    }
+
+    private var badge: some View {
+        EatBiteBadge(result: TutorialPage.ruleExample.result)
+            .fixedSize()
     }
 
     private func row(title: String, text: String) -> some View {
