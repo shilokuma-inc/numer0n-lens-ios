@@ -54,37 +54,38 @@ struct DeductionView: View {
     }
 
     var body: some View {
-        List {
-            Section {
-                LabeledContent("残り候補", value: "\(deduction.candidateCount.formatted()) 通り")
-            } footer: {
-                Text(role.description)
-            }
+        ScrollView {
+            VStack(spacing: Spacing.large) {
+                CandidateCountCard(count: deduction.candidateCount, description: role.description)
 
-            contradictionSection
+                contradictionCard
 
-            if deduction.isSolved {
-                Section {
-                    Label(role.solvedMessage(length: rule.length), systemImage: "checkmark.seal.fill")
-                        .foregroundStyle(.green)
-                        .font(.headline)
-                } footer: {
-                    Text("続けるときは、右上の「やり直す」から新しいゲームを始めてください。")
-                }
-            } else {
-                inputSection
+                if deduction.isSolved {
+                    Card {
+                        Label(role.solvedMessage(length: rule.length), systemImage: "checkmark.seal.fill")
+                            .font(.headline)
+                            .foregroundStyle(Palette.success)
+                        Text("続けるときは、右上の「やり直す」から新しいゲームを始めてください。")
+                            .font(.footnote)
+                            .foregroundStyle(Palette.inkSecondary)
+                    }
+                } else {
+                    inputCard
 
-                if role.showsBestMove {
-                    BestMoveSection(deduction: deduction) { guess in
-                        input.text = guess.description
+                    if role.showsBestMove {
+                        BestMoveSection(deduction: deduction) { guess in
+                            input.text = guess.description
+                        }
                     }
                 }
+
+                historyCard
+
+                CandidatePreviewSection(candidates: deduction.candidates)
             }
-
-            historySection
-
-            CandidatePreviewSection(candidates: deduction.candidates)
+            .padding(Spacing.large)
         }
+        .paperBackground()
         // テンキーには return キーが無いので、スクロールとキーボード上の「完了」で閉じられるようにする。
         .scrollDismissesKeyboard(.interactively)
         .toolbar {
@@ -98,74 +99,112 @@ struct DeductionView: View {
         }
     }
 
-    private var inputSection: some View {
-        Section {
-            TextField("\(rule.length) 桁の数字", text: $input.text)
-                .keyboardType(.numberPad)
-                .font(.title2.monospacedDigit())
-                .focused($isNumberFieldFocused)
-                .accessibilityIdentifier("numberField")
-                // 桁数ぶん入力したら閉じて、EAT / BITE を選びやすくする。
-                // 「履歴に追加」で空に戻したときは閉じない（開き直したキーボードを残す）。
-                .onChange(of: input.text) { _, newText in
-                    if newText.count >= rule.length {
-                        isNumberFieldFocused = false
-                    }
-                }
-            resultPicker(title: "EAT", selection: $input.eat)
-            resultPicker(title: "BITE", selection: $input.bite)
+    private var inputCard: some View {
+        Card(role.inputTitle) {
+            numberField
+            resultPicker(kind: .eat, selection: $input.eat)
+            resultPicker(kind: .bite, selection: $input.bite)
             if case let .failure(problem) = validation {
-                Text(problem.message(for: rule))
-                    .foregroundStyle(.red)
+                Label(problem.message(for: rule), systemImage: "exclamationmark.circle.fill")
                     .font(.footnote)
+                    .foregroundStyle(Palette.danger)
             }
             Button("履歴に追加", action: add)
+                .buttonStyle(.primary)
                 .disabled(!canAdd)
-        } header: {
-            Text(role.inputTitle)
         }
     }
 
-    private func resultPicker(title: String, selection: Binding<Int>) -> some View {
-        LabeledContent(title) {
-            Picker(title, selection: selection) {
-                ForEach(0...rule.length, id: \.self) { value in
-                    Text("\(value)").tag(value)
-                }
+    /// コールを入れる欄。入力方式（数字キーボードのテキスト欄）は変えず、数字タイルの面に見せる。
+    private var numberField: some View {
+        let shape = RoundedRectangle(cornerRadius: Radius.tile, style: .continuous)
+        return TextField(
+            "\(rule.length) 桁の数字",
+            text: $input.text,
+            // El Messiri に日本語の字形は無いので、案内の文は端末のフォントで出す（数字のフォントで出すと別の字形で描かれる）。
+            prompt: Text("\(rule.length) 桁の数字")
+                .font(.title3.weight(.semibold))
+                .tracking(0)
+                .foregroundStyle(Palette.inkSecondary)
+        )
+        .keyboardType(.numberPad)
+        .font(Typography.display(size: 32, relativeTo: .title))
+        .tracking(6)
+        .multilineTextAlignment(.center)
+        .foregroundStyle(Palette.ink)
+        .padding(.vertical, Spacing.small)
+        .padding(.horizontal, Spacing.medium)
+        .background(Palette.tileFace, in: shape)
+        .overlay {
+            shape.strokeBorder(
+                isNumberFieldFocused ? Palette.brand : Palette.tileEdge,
+                lineWidth: isNumberFieldFocused ? 2 : 1
+            )
+        }
+        .focused($isNumberFieldFocused)
+        .accessibilityIdentifier("numberField")
+        // 桁数ぶん入力したら閉じて、EAT / BITE を選びやすくする。
+        // 「履歴に追加」で空に戻したときは閉じない（開き直したキーボードを残す）。
+        .onChange(of: input.text) { _, newText in
+            if newText.count >= rule.length {
+                isNumberFieldFocused = false
             }
-            .pickerStyle(.segmented)
-            .labelsHidden()
         }
     }
 
-    private var historySection: some View {
-        Section {
+    private func resultPicker(kind: EatBitePill.Kind, selection: Binding<Int>) -> some View {
+        let label = Label(kind.title, systemImage: kind.symbol)
+            .font(Typography.badge)
+            .foregroundStyle(kind.color)
+        let picker = Picker(kind.title, selection: selection) {
+            ForEach(0...rule.length, id: \.self) { value in
+                Text("\(value)").tag(value)
+            }
+        }
+        .pickerStyle(.segmented)
+        .labelsHidden()
+        return HStack(spacing: Spacing.medium) {
+            label
+                .frame(minWidth: 72, alignment: .leading)
+            picker
+        }
+    }
+
+    private var historyCard: some View {
+        Card("履歴") {
             if deduction.history.isEmpty {
                 Text("まだ履歴はありません。")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Palette.inkSecondary)
             } else {
-                ForEach(Array(deduction.history.enumerated()), id: \.offset) { index, entry in
-                    HistoryRow(number: index + 1, entry: entry, isContradiction: index == deduction.contradictionIndex)
+                VStack(spacing: 0) {
+                    ForEach(Array(deduction.history.enumerated()), id: \.offset) { index, entry in
+                        if index > 0 {
+                            Divider()
+                                .overlay(Palette.line)
+                        }
+                        HistoryRow(number: index + 1, entry: entry, isContradiction: index == deduction.contradictionIndex)
+                            .padding(.vertical, Spacing.small)
+                    }
                 }
                 Button("最後の履歴を取り消す", role: .destructive) {
                     deduction.undoLast()
                 }
+                .buttonStyle(.secondary)
             }
-        } header: {
-            Text("履歴")
         }
     }
 
     /// 候補が 0 件になったときの知らせ。どの入力で矛盾したかを示す。
     @ViewBuilder
-    private var contradictionSection: some View {
+    private var contradictionCard: some View {
         if let index = deduction.contradictionIndex {
-            Section {
+            Card {
                 Label("候補が 0 通りになりました", systemImage: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.red)
                     .font(.headline)
-            } footer: {
+                    .foregroundStyle(Palette.danger)
                 Text("履歴の \(index + 1) 件目の入力が、それより前の入力と矛盾しています。コールか回答の入れ間違いがないか確かめ、最後の履歴から取り消してください。")
+                    .font(.footnote)
+                    .foregroundStyle(Palette.inkSecondary)
             }
         }
     }
@@ -187,32 +226,85 @@ struct DeductionView: View {
     }
 }
 
-/// 履歴の 1 行。
+/// 履歴の 1 行。コールを数字タイルで、回答を EAT / BITE のバッジで見せる。
 struct HistoryRow: View {
     let number: Int
     let entry: HistoryEntry
     /// この入力で候補が 0 件になったか。
     var isContradiction = false
 
+    /// 行の番号の幅。2 段に折り返したとき、回答をタイルの頭にそろえる。
+    private static let numberWidth: CGFloat = 20
+
     var body: some View {
         switch entry {
         case let .call(guess, result):
-            HStack {
-                Text("\(number).")
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                Text(guess.description)
-                    .font(.body.monospacedDigit())
-                Spacer()
-                Text(result.description)
-                    .monospacedDigit()
-                if isContradiction {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.red)
-                        .accessibilityLabel("この入力で候補が 0 通りになりました")
+            // 5 桁など横に収まらないときは、回答を次の行に下ろす。
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: Spacing.small) {
+                    call(guess)
+                    Spacer(minLength: 0)
+                    answer(result)
+                }
+                VStack(alignment: .leading, spacing: Spacing.small) {
+                    call(guess)
+                    answer(result)
+                        .padding(.leading, Self.numberWidth + Spacing.small)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityElement(children: .combine)
+        }
+    }
+
+    private func call(_ guess: Numer0nNumber) -> some View {
+        HStack(spacing: Spacing.small) {
+            Text("\(number)")
+                .font(Typography.display(size: 15, weight: .semibold, relativeTo: .subheadline))
+                .foregroundStyle(Palette.inkSecondary)
+                .frame(minWidth: Self.numberWidth, alignment: .trailing)
+                .accessibilityLabel("\(number) 件目")
+            DigitTiles(text: guess.description, size: .small)
+        }
+    }
+
+    private func answer(_ result: EatBite) -> some View {
+        HStack(spacing: Spacing.small) {
+            EatBiteBadge(result: result, size: .small)
+            if isContradiction {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Palette.danger)
+                    .accessibilityLabel("この入力で候補が 0 通りになりました")
+            }
+        }
+    }
+}
+
+/// 残り候補の数を大きく見せるカード。
+struct CandidateCountCard: View {
+    let count: Int
+    let description: String
+
+    var body: some View {
+        Card {
+            VStack(alignment: .leading, spacing: Spacing.extraSmall) {
+                Text("残り候補")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Palette.inkSecondary)
+                HStack(alignment: .firstTextBaseline, spacing: Spacing.small) {
+                    Text(count.formatted())
+                        .font(Typography.display(size: 44, relativeTo: .largeTitle))
+                        .foregroundStyle(Palette.ink)
+                        .contentTransition(.numericText())
+                    Text("通り")
+                        .font(.headline)
+                        .foregroundStyle(Palette.inkSecondary)
                 }
             }
             .accessibilityElement(children: .combine)
+            Text(description)
+                .font(.footnote)
+                .foregroundStyle(Palette.inkSecondary)
         }
     }
 }

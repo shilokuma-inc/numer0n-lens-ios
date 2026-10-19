@@ -61,6 +61,18 @@ enum Typography {
     static let badge = display(size: 17, weight: .semibold, relativeTo: .headline)
 }
 
+/// 文字サイズ（Dynamic Type）の上限。アクセシビリティサイズ（AX1〜AX5）では画面の組み方が崩れるので、それより手前で止める。
+enum TextSizeLimit {
+    static let maximum = DynamicTypeSize.xxxLarge
+}
+
+extension View {
+    /// 文字サイズの設定に追従する範囲を、画面が崩れない大きさまでに抑える。
+    func limitedDynamicTypeSize() -> some View {
+        dynamicTypeSize(...TextSizeLimit.maximum)
+    }
+}
+
 /// 余白の段階。
 enum Spacing {
     static let extraSmall: CGFloat = 4

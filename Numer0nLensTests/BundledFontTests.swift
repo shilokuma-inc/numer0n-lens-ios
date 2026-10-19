@@ -3,6 +3,7 @@
 //  Numer0nLensTests
 //
 
+@testable import Numer0nLens
 import UIKit
 import XCTest
 
@@ -26,5 +27,16 @@ final class BundledFontTests: XCTestCase {
         let url = try XCTUnwrap(Bundle.main.url(forResource: "ElMessiri-OFL", withExtension: "txt"))
         let text = try String(contentsOf: url, encoding: .utf8)
         XCTAssertTrue(text.contains("SIL OPEN FONT LICENSE Version 1.1"))
+    }
+
+    /// アプリ内のライセンスの画面に出す全文が、同梱したすべてのフォントについて読み込めること。
+    func testEveryFontLicenseTextLoads() throws {
+        XCTAssertFalse(FontLicense.all.isEmpty)
+        for license in FontLicense.all {
+            let text = try XCTUnwrap(license.text(), license.name)
+            XCTAssertTrue(text.contains("SIL OPEN FONT LICENSE Version 1.1"), license.name)
+            XCTAssertTrue(text.contains("Copyright"), license.name)
+        }
+        XCTAssertTrue(FontLicense.all.contains { $0.name == "El Messiri" })
     }
 }

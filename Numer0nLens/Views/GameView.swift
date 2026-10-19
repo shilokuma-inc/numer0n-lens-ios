@@ -29,17 +29,17 @@ struct GameView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Picker("推理", selection: $side) {
-                ForEach(Side.allCases, id: \.self) { side in
-                    Text(side.title).tag(side)
-                }
+            VStack(spacing: Spacing.medium) {
+                SideSwitcher(selection: $side)
+                ProgressComparisonView(comparison: ProgressComparison(game: game))
             }
-            .pickerStyle(.segmented)
-            .padding()
-
-            ProgressComparisonView(comparison: ProgressComparison(game: game))
-                .padding(.horizontal)
-                .padding(.bottom, 8)
+            .padding(.horizontal, Spacing.large)
+            .padding(.top, Spacing.small)
+            .padding(.bottom, Spacing.medium)
+            .background(alignment: .bottom) {
+                // 下の推理の画面とスクロールの境目を細い線で示す。
+                Palette.line.frame(height: 1)
+            }
 
             switch side {
             case .mine:
@@ -58,16 +58,21 @@ struct GameView: View {
                 TutorialButton {
                     isShowingTutorial = true
                 }
-                Menu("やり直す") {
-                    Button("同じ桁数でやり直す") {
+                Menu {
+                    Button("同じ桁数でやり直す", systemImage: "arrow.counterclockwise") {
                         isConfirmingRestart = true
                     }
-                    Button("桁数を選び直す") {
+                    Button("桁数を選び直す", systemImage: "textformat.123") {
                         onChooseDigitCount()
                     }
+                } label: {
+                    Label("やり直す", systemImage: "arrow.counterclockwise.circle")
+                        .labelStyle(.titleAndIcon)
                 }
             }
         }
+        .tint(Palette.brand)
+        .paperBackground()
         .confirmationDialog("履歴を消してやり直しますか？", isPresented: $isConfirmingRestart, titleVisibility: .visible) {
             Button("やり直す", role: .destructive) {
                 game.restart()
@@ -80,6 +85,45 @@ struct GameView: View {
                 isShowingTutorial = false
             }
         }
+    }
+}
+
+/// 自分の推理と相手の推理の切り替え。紙の上の溝に、選んだ側をタイルのように置く。
+struct SideSwitcher: View {
+    @Binding var selection: GameView.Side
+
+    var body: some View {
+        HStack(spacing: Spacing.extraSmall) {
+            ForEach(GameView.Side.allCases, id: \.self) { side in
+                option(side)
+            }
+        }
+        .padding(Spacing.extraSmall)
+        .background(Palette.line.opacity(0.5), in: RoundedRectangle(cornerRadius: Radius.button, style: .continuous))
+    }
+
+    private func option(_ side: GameView.Side) -> some View {
+        let isSelected = side == selection
+        let shape = RoundedRectangle(cornerRadius: Radius.button - Spacing.extraSmall, style: .continuous)
+        return Button {
+            selection = side
+        } label: {
+            Text(side.title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(isSelected ? Palette.ink : Palette.inkSecondary)
+                .frame(maxWidth: .infinity, minHeight: 36)
+                .padding(.horizontal, Spacing.small)
+                .background {
+                    if isSelected {
+                        shape.fill(Palette.tileFace)
+                            .overlay(shape.strokeBorder(Palette.tileEdge, lineWidth: 1))
+                            .shadow(color: Palette.tileEdge.opacity(0.8), radius: 0, x: 0, y: 2)
+                    }
+                }
+                .contentShape(shape)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
