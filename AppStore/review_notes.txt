@@ -15,7 +15,7 @@ The players play face to face, and the user copies each call and answer into the
 Target audience: players of this game and people who enjoy logic puzzles. Tracking every possible number by hand is tedious and error-prone; the app does this and shows which calls give the most information.
 
 3. HOW TO ACCESS THE MAIN FEATURES
-No login, account, credentials, or sample files are required. All features are available right after launch.
+No login, account, credentials, or sample files are required.
 The user interface is in Japanese. English translations are given in brackets.
 1. On first launch, a tutorial explains the rules and the app. Swipe through the pages or tap "スキップ" [Skip]. Reopen it anytime with the "?" button (top right).
 2. Choose 3, 4, or 5 digits and tap "ゲームを始める" [Start game].
@@ -32,5 +32,5 @@ None. The app works entirely offline. It does not connect to the network and use
 None. The app's features and content are the same in all regions. The user interface is in Japanese only.
 
 6. REGULATED INDUSTRY / THIRD-PARTY MATERIAL
-The app does not operate in a regulated industry. It contains no third-party material such as logos, images, video, or audio from any TV program or other game; all graphics were created by our team. The game itself is a traditional number-guessing game ("Bulls and Cows"). "Numer0n" is used only as the common name of this game in Japan, to describe which game the app helps with. A search of J-PlatPat (the Japan Patent Office database) for "Numer0n" and "ヌメロン" returned no registered trademarks or pending applications. The app is an independent tool and is not affiliated with or endorsed by the producer of the "Numer0n" TV program.
+The app does not operate in a regulated industry. It contains no third-party material such as logos, images, video, or audio from any TV program or other game; all graphics were created by our team. The game itself is a traditional number-guessing game ("Bulls and Cows"). "Numer0n" is used only as the common name of this game in Japan, to describe which game the app helps with. On October 22, 2026, a keyword search of J-PlatPat (the Japan Patent Office database) across patents, utility models, designs, and trademarks for "Numer0n" and "ヌメロン" returned no results. The app is an independent tool and is not affiliated with or endorsed by the producer of the "Numer0n" TV program.
 The only third-party asset is the font "El Messiri", used under the SIL Open Font License 1.1. Its license is shown in the app ("フォントのライセンス" [Font license] on the start screen).
