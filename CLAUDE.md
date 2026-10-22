@@ -22,8 +22,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `Configs/*.xcconfig` … 署名情報・Bundle ID・バージョン・Deployment Target（pbxproj には値を直接書かない）
 - `.swiftlint.yml` … SwiftLint の設定（SwiftLintPlugins の Build Tool Plugin として全ターゲットに適用）
 - `.github/workflows/` … GitHub Actions（template-app-ios から移植。テンプレートとの差分を最小に保つ）
-- `AppStore/`・`Tools/` … App Store の掲載情報（スクリーンショット・説明文・ヘッダー）の元ネタと、撮影・検査・反映のスクリプト（template-app-ios から移植。手順は README の「App Store の掲載情報」）
-  - `AppStore/review_notes.txt` … App Review に関する情報の「メモ」に貼る英文（使い方・外部サービスなど）。画面の文言や機能、外部サービス、第三者の素材（フォントなど）を足す・変える・外すときは一緒に直す
+- `AppStore/`・`Tools/` … App Store の掲載情報（スクリーンショット・説明文・App 情報・審査のメモ・ヘッダー）の元ネタと、撮影・検査・反映のスクリプト（template-app-ios から移植。手順は README の「App Store の掲載情報」）
+  - `AppStore/review_notes.txt` … App Review に関する情報の「メモ」の英文（使い方・外部サービスなど）。`app_info.json` の `review.notesFile` から読み、`Metadata/App Store` が反映する。画面の文言や機能、外部サービス、第三者の素材（フォントなど）を足す・変える・外すときは一緒に直す
 
 ## ビルド・検証
 
@@ -47,8 +47,8 @@ xcodebuild test -project Numer0nLens.xcodeproj -scheme Numer0nLens -destination 
 | Upload（`upload.yml` → `_archive.yml`） | `develop` / `release/**` への push・手動 | Archive → IPA Export → App Store Connect（TestFlight） |
 | Close goal Discussion（`close-goal-discussion.yml`） | `epic-final` 付きの PR が `develop` にマージされたとき | ゴール元の Discussion を解決済みで閉じる |
 | Screenshots/App Store（`app-store-screenshots.yml`） | 手動（`release/**` を選んだときだけ撮る） | 撮影モードでスクリーンショットを撮り、App Store Connect に反映 |
-| Metadata/App Store・Creative assets/App Store | 手動（既定は dry-run） | 説明文など・ヘッダーと検索結果を App Store Connect に反映 |
-| Verify/App Store metadata | `AppStore/**`・`Tools/**` などを変えた PR | 文字数の上限・撮影設定・撮影モードの Scene との対応を検査 |
+| Metadata/App Store・Creative assets/App Store | 手動（既定は dry-run） | 説明文・App 情報・審査のメモなど・ヘッダーと検索結果を App Store Connect に反映 |
+| Verify/App Store metadata | `AppStore/**`・`Tools/**` などを変えた PR | 文字数の上限・App 情報の書き方・撮影設定・撮影モードの Scene との対応を検査 |
 
 - Xcode は CI で 26.6 に固定（`_build.yml` / `_archive.yml` の `xcode-version`）。ローカルの Xcode が新しいと、ローカルで通っても CI で落ちることがある
 - ドキュメントだけの変更（`**/*.md`・`docs/**`）では Build は走らない。`epic/**` 宛ての PR では PR イベントの Build は走らず、ブランチへの push で走る
