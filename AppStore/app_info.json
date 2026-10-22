@@ -13,7 +13,7 @@
     "pricing / availability は、App Store Connect で未設定のとき（最初のリリースの前）だけ書き込む。設定済みなら触らないので、価格や配信先を変えるときは App Store Connect の画面で行う。",
     "  pricing.price は FREE だけ書ける（有料のアプリは App Store Connect で設定し、pricing を消す）。availability.territories は ALL（すべての国と地域）か、[\"JPN\"] のような 3 文字のコードの配列。"
   ],
-  "primaryCategory": "GAMES",
+  "primaryCategory": "UTILITIES",
   "contentRightsDeclaration": "DOES_NOT_USE_THIRD_PARTY_CONTENT",
   "ageRating": {
     "alcoholTobaccoOrDrugUseOrReferences": "NONE",
