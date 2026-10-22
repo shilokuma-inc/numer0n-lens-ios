@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `.swiftlint.yml` … SwiftLint の設定（SwiftLintPlugins の Build Tool Plugin として全ターゲットに適用）
 - `.github/workflows/` … GitHub Actions（template-app-ios から移植。テンプレートとの差分を最小に保つ）
 - `AppStore/`・`Tools/` … App Store の掲載情報（スクリーンショット・説明文・ヘッダー）の元ネタと、撮影・検査・反映のスクリプト（template-app-ios から移植。手順は README の「App Store の掲載情報」）
-  - `AppStore/review_notes.txt` … App Review に関する情報の「メモ」に貼る英文（使い方・外部サービスなど）。画面の文言や機能、外部サービスを変えたら一緒に直す
+  - `AppStore/review_notes.txt` … App Review に関する情報の「メモ」に貼る英文（使い方・外部サービスなど）。画面の文言や機能、外部サービス、第三者の素材（フォントなど）を足す・変える・外すときは一緒に直す
 
 ## ビルド・検証
 
