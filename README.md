@@ -125,7 +125,7 @@ Archive / Upload は App Store Connect API Key で認証します。以下はリ
 3. **App Store Connect のアプリ**: Bundle ID `jp.shilokuma.Numer0nLens` のアプリを Web 画面で作成します（API では作れません）。
    アプリが無いまま Upload が走ると、[.github/scripts/check-app-store-app.rb](.github/scripts/check-app-store-app.rb) が「新規アプリ」画面に入力する値を Job Summary に出して止まります
 
-## App Store の掲載情報（スクリーンショット・説明文・ヘッダー）
+## App Store の掲載情報（スクリーンショット・説明文・App 情報・ヘッダー）
 
 App Store のプロダクトページに載せるものは、`AppStore/` の JSON を元ネタにして、手動実行のワークフローで App Store Connect に反映します（[template-app-ios](https://github.com/shilokuma-inc/template-app-ios) から移植）。
 反映先は「編集できる状態のバージョン」だけで、審査中・配信済みのバージョンには触りません。
@@ -134,9 +134,9 @@ App Store のプロダクトページに載せるものは、`AppStore/` の JSO
 | ワークフロー | 反映するもの | 元ネタ | ランナー |
 |---|---|---|---|
 | `Screenshots/App Store` | スクリーンショット（iPhone 6.9 inch / 6.3 inch / iPad 13 inch / iPhone Duo） | `AppStore/screenshots.json` / `AppStore/languages.json` / `AppStore/app.json` | 撮影だけ macOS、縮小と反映は ubuntu |
-| `Metadata/App Store` | 説明文・キーワード・プロモーションテキスト・最新情報・URL（既定は dry-run） | `AppStore/metadata/*.json` | ubuntu |
+| `Metadata/App Store` | 名前・サブタイトル・説明文・キーワード・プロモーションテキスト・最新情報・URL・プライバシーポリシーの URL・著作権と、App 情報（カテゴリ・コンテンツの権利・年齢制限）・審査のメモ・価格と配信状況（既定は dry-run） | `AppStore/metadata/*.json` / `AppStore/app_info.json` / `AppStore/review_notes.txt` | ubuntu |
 | `Creative assets/App Store` | プロダクトページのヘッダーと検索結果のクリエイティブアセット（既定は dry-run） | `AppStore/creative_assets.json` / `AppStore/creative/<言語>/` | ubuntu |
-| `Verify/App Store metadata` | PR で、文字数の上限・撮影設定・撮影モードの Scene との対応を検査する | `AppStore/**` | ubuntu |
+| `Verify/App Store metadata` | PR で、文字数の上限・App 情報の書き方・撮影設定・撮影モードの Scene との対応を検査する | `AppStore/**` | ubuntu |
 
 - 言語は日本語だけです（アプリの文言が日本語だけのため。[AppStore/languages.json](AppStore/languages.json)）
 - リリースのときは、`release/x.y.z` を切ってから、そのブランチを選んで `Screenshots/App Store` → `Metadata/App Store`（dry-run で差分を見てから本番）の順に流します
@@ -151,9 +151,11 @@ App Store のプロダクトページに載せるものは、`AppStore/` の JSO
 - iPhone Duo は Xcode 27.1 と iOS 27.1 のランタイムが要るので、`xcode-27` のランナーで撮ります（`screenshots.json` の `runsOn` / `xcodeVersion`）
 - 手元で撮るなら `SKIP_PACKAGE_PLUGIN_VALIDATION=1 Tools/capture_screenshots.sh APP_IPHONE_67 ja`（出力は `build/screenshots/`）
 
-**説明文・最新情報**
+**名前・説明文・最新情報**
 
 - `AppStore/metadata/ja.json` と `shared.json` に書きます。仮の文言（`TODO:`）が残っているあいだは反映できません
+- 名前（`name`）・サブタイトル（`subtitle`）も `ja.json` に書きます（どちらも 30 字まで）。App Store Connect では「App 情報」の項目に書き込みます
+- `shared.json` の `privacyPolicyUrl`（プライバシーポリシーの URL。必須）は App 情報に、`copyright`（著作権。必須）はバージョンに書き込みます。プライバシーポリシーは [shilokuma-inc/shilokuma-web](https://github.com/shilokuma-inc/shilokuma-web) の `privacy/apps.json`（slug は `numer0n-lens`）から作られます
 - 「このバージョンの最新情報」は `whatsNew` に `{"version": "1.1.0", "text": "…"}` の形で書きます。`version` が反映先のバージョンと一致するときだけ書き込むので、リリースごとに両方を書き換えます（最初のバージョンには最新情報の欄がありません）
 
 **プロダクトページのヘッダーと検索結果**（[App Store asset best practices](https://developer.apple.com/app-store/asset-best-practices/)）
@@ -163,18 +165,47 @@ App Store のプロダクトページに載せるものは、`AppStore/` の JSO
 - `Creative assets/App Store` を `ref-data` → `dry-run` → `upload` の順に流して反映します
 - 反映したら、App Store Connect のプレビューで iPhone / iPad の見え方を確かめてから審査に出します
 
+**App 情報・審査の情報・価格と配信状況**
+
+- `AppStore/app_info.json` に書き、`Metadata/App Store` が説明文の後に続けて反映します（`Tools/upload_app_info.py`）
+
+| 項目 | JSON のキー | 書き込み方 |
+|---|---|---|
+| カテゴリ | `primaryCategory`（必須）・`secondaryCategory`・`primarySubcategories` / `secondarySubcategories` | カテゴリの ID（`GAMES`・サブカテゴリの `GAMES_PUZZLE` など）で書きます。ID が違えば、使える一覧を出して書き込む前に止まります。カテゴリを変えたときは、書いていない古いサブカテゴリを App Store Connect からも外します |
+| コンテンツの権利 | `contentRightsDeclaration` | 第三者のコンテンツを使わないなら `DOES_NOT_USE_THIRD_PARTY_CONTENT` |
+| 年齢制限 | `ageRating` | 質問ごとの回答。広告・ユーザーの投稿・課金・Web の閲覧が無いので、すべて「なし」（4+）です。機能を足したら見直します |
+| App Review に関する情報 | `review`（`demoAccountRequired`・`notesFile`） | メモは `notesFile` の [AppStore/review_notes.txt](AppStore/review_notes.txt) を書き込みます。連絡先は JSON に書かず、Organization の Secrets（`APP_REVIEW_CONTACT_*`）から渡します。値はログに出しません |
+| 価格 | `pricing` | **App Store Connect で未設定のときだけ**無料にします。設定済みなら触りません |
+| 配信状況 | `availability` | **App Store Connect で未設定のときだけ**書き込みます。設定済みなら触りません |
+
+- 価格と配信状況は 1.0.0 の提出の時点で設定済みなので、このリポジトリからは変わりません。変えるときは App Store Connect の「価格および配信状況」で行います
+- 連絡先の Secrets が登録されていなければ連絡先は書き込まず、Job Summary の「審査に出す前に App Store Connect で入力が要るもの」に出ます
+
 **App Review に関する情報（審査メモ・画面収録）**
 
 1.0.0 の最初の審査で、Guideline 2.1 - Information Needed（実機の画面収録と、目的・使い方・外部サービス・地域差・第三者の素材についての説明）を求められました。
-次の審査でも同じことを聞かれないよう、提出の前に App Store Connect の「App Review に関する情報」に入れておきます（ワークフローでは反映しないので手で入れます）。
+次の審査でも同じことを聞かれないよう、提出の前に App Store Connect の「App Review に関する情報」に入れておきます。
 
-- **メモ**: [AppStore/review_notes.txt](AppStore/review_notes.txt) の全文を貼ります（英語・上限 4000 字）。画面の文言や機能を変えたら、このファイルも直します
-- **添付ファイル**: 実機の画面収録を添付します。審査から質問が来たときは、App Review からのメッセージへの返信にも同じ動画とメモを付けます
+- **メモ**: [AppStore/review_notes.txt](AppStore/review_notes.txt) を `Metadata/App Store` で反映します（英語・上限 4000 字。前後の空行は落とします）。画面の文言や機能を変えたら、このファイルも直します
+- **添付ファイル**: 実機の画面収録は API で反映しないので、App Store Connect で添付します。審査から質問が来たときは、App Review からのメッセージへの返信にも同じ動画とメモを付けます
 - **画面収録の撮り方**
   - 実機（最新の iOS）に、審査に出すビルドを TestFlight で入れます。チュートリアルも映すため、一度アプリを削除してから入れ直し、初回起動の状態にします
   - 撮影中に通知が映らないよう、集中モードをオンにします。コントロールセンターの「画面収録」で撮り始め、ホーム画面のアイコンをタップしてアプリを起動するところから撮ります
   - 映す流れ（1〜3 分）: チュートリアルを数ページ見て閉じる → 3 桁でゲームを始める → 「自分の推理」でコールと EAT / BITE を 2〜3 件入れ、残り候補と最善手が変わるのを見せる → 最善手をタップして入力欄に入れる → 「すべて見る」で候補の一覧と先頭の数字での絞り込み → 「相手の推理」に切り替えて 1〜2 件入れる → 矛盾する入力を入れて警告を出し、「最後の履歴を取り消す」で戻す → 「やり直す」で新しいゲーム
   - アカウント・ユーザーの投稿・課金は無いので、それらの流れは撮りません（メモにもそう書いています）。機能を足したら（課金など）、その流れも撮ります
+
+**審査に出す前に App Store Connect で手入力するもの**
+
+API が無い・リリースの判断が要るなど、ワークフローで反映できないものです。`Metadata/App Store` の最後にも一覧が出ます。
+
+| 項目 | 理由・手順 |
+|---|---|
+| App Review に関する情報の添付ファイル（実機の画面収録） | API で反映していません。上の手順で撮って添付します |
+| App のプライバシー（収集するデータの申告） | API がありません。[Numer0nLens/PrivacyInfo.xcprivacy](Numer0nLens/PrivacyInfo.xcprivacy)（データの収集なし）とプライバシーポリシーに合わせて答えます |
+| ビルドの選択と審査への提出 | リリースの判断なので人が行います。輸出コンプライアンスは `ITSAppUsesNonExemptEncryption`（`NO`、[Configs/Project.xcconfig](Configs/Project.xcconfig)）で申告済みです |
+| デジタルサービス法（EU）の取引業者の情報 | アカウントで一度だけ行います。登録済みなら不要です |
+
+流す順は、`Metadata/App Store` を dry-run で実行して Job Summary の差分を確かめ → `dry_run` を外して実行 → 最後に出る「審査に出す前に App Store Connect で入力が要るもの」を App Store Connect で埋める、です。
 
 ## 構成
 

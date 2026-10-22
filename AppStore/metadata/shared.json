@@ -2,8 +2,13 @@
   "_comment": [
     "言語によらず同じ値を使う App Store のメタデータ。",
     "supportUrl は Apple の審査で実際に開かれるので、必ず到達できる URL にすること（ninjacord-ios・prime-pick-ios と同じ、shilokuma のお問い合わせフォーム）。",
-    "marketingUrl は任意。消すと App Store Connect 側の値をそのまま残す。"
+    "marketingUrl は任意。消すと App Store Connect 側の値をそのまま残す。",
+    "privacyPolicyUrl は App 情報のプライバシーポリシー URL で、すべてのアプリで必須。全言語に同じ URL を入れる。",
+    "shilokuma のアプリは https://shilokuma.jp/privacy/<slug>/（shilokuma-inc/shilokuma-web の privacy/apps.json にアプリを足して作る）。",
+    "copyright はバージョンの著作権表示で必須。年は権利を得た年（最初のリリースの年）なので、リリースのたびに変えなくてよい。"
   ],
   "supportUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc4DiUAcjKlrchuefXxehD-BgCEhGVomX6NOwtijWiE0yJAlQ/viewform",
-  "marketingUrl": "https://shilokuma-inc.github.io"
+  "marketingUrl": "https://shilokuma-inc.github.io",
+  "privacyPolicyUrl": "https://shilokuma.jp/privacy/numer0n-lens/",
+  "copyright": "© 2026 Takumi Muraishi"
 }
