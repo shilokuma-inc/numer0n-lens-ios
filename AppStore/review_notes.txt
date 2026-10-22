@@ -1,0 +1,36 @@
+Numer0n Lens - Notes for App Review
+
+1. SCREEN RECORDING
+A screen recording from a physical iPhone running the latest iOS is attached to the App Review Information and to our reply. It starts by launching the app and shows the typical flow: tutorial, starting a game, entering calls and answers, remaining candidates, best-move suggestions, the opponent's deduction, the full candidate list, and undoing a contradictory entry.
+The app has no account registration, login, user-generated content, paid content, or In-App Purchases.
+
+2. PURPOSE AND TARGET AUDIENCE
+Numer0n Lens is a companion tool for a two-player number-guessing game of the "Bulls and Cows" / "Hit and Blow" family, widely known in Japan as "Numer0n". Each player secretly chooses a number made of distinct digits (0-9), and the players take turns calling numbers. Each call is answered with EAT (correct digit, correct position) and BITE (correct digit, wrong position).
+The players play face to face, and the user copies each call and answer into the app. From this history, the app:
+- calculates every number that is still possible and shows how many remain
+- suggests the five best next calls, ranked by expected information (bits)
+- tracks how far the opponent has narrowed down the user's number and shows who is closer to winning
+- lists all remaining candidates, with a filter by leading digits
+- detects contradictory entries and lets the user undo the last entry
+Target audience: players of this game and people who enjoy logic puzzles. Tracking every possible number by hand is tedious and error-prone. The app does this bookkeeping and helps users learn which calls give the most information.
+
+3. HOW TO ACCESS THE MAIN FEATURES
+No login, account, credentials, or sample files are required. All features are available right after launch.
+The user interface is in Japanese. English translations are given in brackets.
+1. On first launch, a tutorial explains the rules and the app. Swipe through the pages or tap "スキップ" [Skip]. Reopen it anytime with the "?" button (top right).
+2. Choose 3, 4, or 5 digits and tap "ゲームを始める" [Start game].
+3. In the "自分の推理" [My deduction] tab, enter a call, select the number of EAT and BITE, and tap "履歴に追加" [Add to history]. The remaining candidates and "最善手" [Best moves] are updated. Tapping a best move fills it into the input field.
+4. Switch to the "相手の推理" [Opponent's deduction] tab at the top to enter the opponent's calls and the user's answers.
+5. Tap "すべて見る" [See all] to open the full list of remaining candidates.
+6. If an entry contradicts earlier ones, the app shows a warning. Tap "最後の履歴を取り消す" [Undo last entry] to fix it.
+7. Use "やり直す" [Restart] (top right) to start a new game.
+
+4. EXTERNAL SERVICES
+None. The app works entirely offline. It does not connect to the network and uses no data providers, authentication services, payment processors, analytics, advertising, or AI services. It contains no third-party SDKs; all calculations run on the device.
+
+5. REGIONAL DIFFERENCES
+None. The app's features and content are the same in all regions. The user interface is in Japanese only.
+
+6. REGULATED INDUSTRY / THIRD-PARTY MATERIAL
+The app does not operate in a regulated industry. It contains no third-party material such as logos, images, video, or audio from any TV program or other game; all graphics were created by our team. The game itself is a traditional number-guessing game ("Bulls and Cows"). The name "Numer0n" is used only to describe which game the app helps with. The app is an independent tool and is not affiliated with or endorsed by the owner of the "Numer0n" TV program.
+The only third-party asset is the font "El Messiri", used under the SIL Open Font License 1.1. Its license is shown in the app ("フォントのライセンス" [Font license] on the start screen).
