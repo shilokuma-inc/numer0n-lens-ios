@@ -45,15 +45,19 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 cp "$SOURCE" "$WORK/creative.html"
 cp "$APP_ICON" "$WORK/icon.png"
-# フォントが読めないと、Chrome は代わりのフォントのまま書き出してしまう（寸法の検査では気づけない）
 if [ -n "$FONTS" ]; then
     mkdir -p "$WORK/fonts"
-    find "$FONTS" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) -exec cp {} "$WORK/fonts/" \;
-    if [ -z "$(ls -A "$WORK/fonts")" ]; then
-        echo "$FONTS にフォント（.ttf / .otf）がありません。" >&2
+    # シンボリックリンクのフォントも、リンク先の実体をコピーする
+    find -L "$FONTS" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) -exec cp {} "$WORK/fonts/" \;
+fi
+# HTML が読むフォント（@font-face の url("fonts/…")）が揃っているか確かめる。
+# 読めないと、Chrome は代わりのフォントのまま書き出してしまう（寸法の検査では気づけない）
+while IFS= read -r font; do
+    if [ ! -f "$WORK/$font" ]; then
+        echo "$SOURCE が読む $font がありません。AppStore/app.json の creativeFonts を確かめてください: ${FONTS:-（未設定）}" >&2
         exit 1
     fi
-fi
+done < <(grep -oE 'url\("fonts/[^"]+"\)' "$SOURCE" | sed -E 's/^url\("(.*)"\)$/\1/')
 
 REMOVE_ALPHA="$WORK/remove_alpha"
 xcrun swiftc -O Tools/remove_alpha.swift -o "$REMOVE_ALPHA"
