@@ -9,6 +9,7 @@ set -euo pipefail
 # （Tools/capture_screenshots.sh APP_IPHONE_67 の出力か、Screenshots/App Store ワークフローの artifact。
 #  既定は build/screenshots/APP_IPHONE_67）を、AppStore/screenshots.json の scenes の順に使う。
 # アプリアイコンは AppStore/app.json の appIcon。アプリ名は省略すると .xcodeproj の名前を使う。
+# app.json に creativeFonts（フォントのフォルダ）があれば、その中のフォントを HTML の隣の fonts/ に置く。
 # Google Chrome をヘッドレスで開いて実寸で撮り、アルファを落として AppStore/creative/<言語>/ に保存する。
 # 書き出したら差分を見てコミットし、Creative assets/App Store ワークフローで反映する。
 
@@ -19,6 +20,7 @@ CONFIG="python3 Tools/app_store_config.py"
 SCREENSHOTS="${1:-build/screenshots/APP_IPHONE_67}"
 APP_NAME="${2:-$($CONFIG app scheme)}"
 APP_ICON="$($CONFIG app appIcon)"
+FONTS="$($CONFIG app creativeFonts)"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 SOURCE="AppStore/creative/src/creative.html"
 OUTPUT_DIR="AppStore/creative"
@@ -31,6 +33,10 @@ if [ -z "$APP_ICON" ] || [ ! -f "$APP_ICON" ]; then
     echo "アプリアイコンが見つかりません。AppStore/app.json の appIcon を確かめてください: ${APP_ICON:-（未設定）}" >&2
     exit 1
 fi
+if [ -n "$FONTS" ] && [ ! -d "$FONTS" ]; then
+    echo "フォントのフォルダが見つかりません。AppStore/app.json の creativeFonts を確かめてください: $FONTS" >&2
+    exit 1
+fi
 if grep -q '"TODO:' "$SOURCE"; then
     echo "注意: $SOURCE に仮の文言（\"TODO: …）が残っています（このままでは App Store Connect に反映できません）" >&2
 fi
@@ -39,12 +45,37 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 cp "$SOURCE" "$WORK/creative.html"
 cp "$APP_ICON" "$WORK/icon.png"
+if [ -n "$FONTS" ]; then
+    mkdir -p "$WORK/fonts"
+    # シンボリックリンクのフォントも、リンク先の実体をコピーする
+    find -L "$FONTS" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) -exec cp {} "$WORK/fonts/" \;
+fi
+# HTML が読むフォント（@font-face の url("fonts/…")）が揃っているか確かめる。
+# 読めないと、Chrome は代わりのフォントのまま書き出してしまう（寸法の検査では気づけない）
+while IFS= read -r font; do
+    if [ ! -f "$WORK/$font" ]; then
+        echo "$SOURCE が読む $font がありません。AppStore/app.json の creativeFonts を確かめてください: ${FONTS:-（未設定）}" >&2
+        exit 1
+    fi
+done < <(grep -oE 'url\("fonts/[^"]+"\)' "$SOURCE" | sed -E 's/^url\("(.*)"\)$/\1/')
 
 REMOVE_ALPHA="$WORK/remove_alpha"
 xcrun swiftc -O Tools/remove_alpha.swift -o "$REMOVE_ALPHA"
 
 # screenshots.json の scenes の順（先頭が真ん中の端末に載る）
 SCREENS="$($CONFIG scenes | cut -f1 | paste -sd, -)"
+# HTML が名前で選ぶ画面（const requiredScreens = [...]）が scenes にあるか確かめる。
+# 無いまま書き出すと、HTML はエラーの画面を書き出してしまう（寸法の検査では気づけない）
+REQUIRED_SCREENS="$(sed -n 's/^ *const requiredScreens = \[\(.*\)\];.*$/\1/p' "$SOURCE" | tr -d '" ' | tr ',' ' ')"
+for screen in $REQUIRED_SCREENS; do
+    case ",$SCREENS," in
+        *",$screen,"*) ;;
+        *)
+            echo "$SOURCE が使う画面 $screen が、AppStore/screenshots.json の scenes にありません。" >&2
+            exit 1
+            ;;
+    esac
+done
 
 # 書き出す種類: <type> <ファイル名> <幅> <高さ>（寸法は AppStore/creative_assets.json の説明を参照）
 TARGETS="header header.png 3840 1646

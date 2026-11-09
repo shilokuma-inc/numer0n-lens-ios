@@ -150,6 +150,7 @@ App Store のプロダクトページに載せるものは、`AppStore/` の JSO
 - macOS ランナーの枠を開発のビルドと取り合わないよう、撮影は 1 本ずつ流します。6.3 inch（`deriveFrom`）は撮らずに 6.9 inch を ubuntu で縮めて作り、App Store Connect への反映も ubuntu で行います
 - iPhone Duo は Xcode 27.1 と iOS 27.1 のランタイムが要るので、`xcode-27` のランナーで撮ります（`screenshots.json` の `runsOn` / `xcodeVersion`）
 - 手元で撮るなら `SKIP_PACKAGE_PLUGIN_VALIDATION=1 Tools/capture_screenshots.sh APP_IPHONE_67 ja`（出力は `build/screenshots/`）
+- Simulator のランタイムは、その機種に対応したもののうち、ビルドする SDK 以下で一番新しいものを選びます（iOS 27.1 のランタイムのように、iPhone Duo にしか対応しないものがあるため）
 
 **名前・説明文・最新情報**
 
@@ -161,8 +162,13 @@ App Store のプロダクトページに載せるものは、`AppStore/` の JSO
 **プロダクトページのヘッダーと検索結果**（[App Store asset best practices](https://developer.apple.com/app-store/asset-best-practices/)）
 
 - iOS 27 / iPadOS 27 以降の App Store では、スクリーンショットとは別に、プロダクトページのヘッダー（21:9、3840x1646）と検索結果（3:2、3840x2560）に画像を載せられます
-- 元は [AppStore/creative/src/creative.html](AppStore/creative/src/creative.html)。色と文言（`TODO:`）をアプリに合わせて書き換え、6.9 inch のスクリーンショットを撮ってから `Tools/render_creative_assets.sh build/screenshots/APP_IPHONE_67 "Numer0n Lens"` で書き出し（Google Chrome を使います）、画像もコミットします
-- `Creative assets/App Store` を `ref-data` → `dry-run` → `upload` の順に流して反映します
+- 元は [AppStore/creative/src/creative.html](AppStore/creative/src/creative.html)、書き出した画像は `AppStore/creative/ja/`（`header.png`・`search_results.png`）です
+- デザイン: アイコンの配色（夜の紺・カルトゥーシュの金・虫眼鏡のミント）とピラミッドを使い、見出しはヒラギノ明朝、数字と英字は El Messiri です。グロー・星空・傾けた端末・ピル型のチップのような、テンプレートらしい飾りは使いません
+  - ヘッダー: 「720 通りから、ひとつへ。」と、候補が 720 → 210 → 72 → 24 → 1 に減っていく流れ（相手の数を 739 としたときの実際のコールと回答）。最後の 1 はカルトゥーシュに入れます
+  - 検索結果: 左にアプリ名・「次の一手が、数字でわかる。」・主な機能 3 つ、右に Dynamic Island のある iPhone（iPhone 17 Pro Max の比率）で、残り候補の全件と自分の推理の画面
+- 書き出し: 6.9 inch のスクリーンショットを撮ってから `Tools/render_creative_assets.sh build/screenshots/APP_IPHONE_67 "Numer0n Lens"` を実行し（Google Chrome を使います）、画像もコミットします。El Messiri は [AppStore/app.json](AppStore/app.json) の `creativeFonts`（`Numer0nLens/Fonts`）から HTML の隣の `fonts/` に置かれます。ヒラギノは macOS のものを使うので、書き出しは Mac で行います
+- 文言や画面を変えたら、書き出し直してコミットします（画像は CI では作りません）
+- `Creative assets/App Store` を `ref-data` → `dry-run` → `upload` の順に流して反映します。反映先は編集できる状態のバージョンだけなので、次のバージョン（1.1.0 など）を App Store Connect に作ってから流します
 - 反映したら、App Store Connect のプレビューで iPhone / iPad の見え方を確かめてから審査に出します
 
 **App 情報・審査の情報・価格と配信状況**
