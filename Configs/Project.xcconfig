@@ -1,0 +1,34 @@
+//
+//  Project.xcconfig
+//  Numer0nLens
+//
+//  プロジェクト共通のビルド設定。
+//  （pbxproj 側にはこれらの値を直接書かず、ここだけを編集する）
+//
+
+// Apple Developer Program の Team ID
+DEVELOPMENT_TEAM = XU74X3434S
+
+// アプリ本体の Bundle Identifier。
+// テストターゲットは $(APP_BUNDLE_IDENTIFIER).Tests / .UITests として派生させる
+APP_BUNDLE_IDENTIFIER = jp.shilokuma.Numer0nLens
+
+// ホーム画面に表示するアプリ名（CFBundleDisplayName）
+APP_DISPLAY_NAME = Numer0n Lens
+
+// アプリ本体の Swift モジュール名（テストの @testable import で使う）
+APP_MODULE_NAME = Numer0nLens
+
+// バージョン（CFBundleShortVersionString / CFBundleVersion）
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+// 最低サポート OS
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+
+// 輸出コンプライアンスの申告（Info.plist の ITSAppUsesNonExemptEncryption）。
+// NO は「免除対象外の暗号を使わない」という申告で、これがあると App Store Connect が
+// ビルドごとに暗号化の質問を出さず、TestFlight の配信が止まらない。
+// HTTPS など OS 標準の暗号だけを使うなら通常は NO のままでよい。
+// 独自の暗号や標準外のアルゴリズムを入れるときは見直すこと
+INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO

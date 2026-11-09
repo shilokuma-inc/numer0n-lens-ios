@@ -1,0 +1,16 @@
+{
+  "_comment": [
+    "App Store 用のスクリーンショットの撮影と、App Store Connect への反映で使うアプリの設定。",
+    "project / scheme: 撮影でビルドするプロジェクトと Scheme。",
+    "configuration: 撮影でビルドする構成。広告などを写したくないときは、専用の構成を作ってここに書く。",
+    "Bundle ID は Configs/Project.xcconfig の APP_BUNDLE_IDENTIFIER から読む（ここに bundleId を書けばそちらを使う）。",
+    "screenshotDemoSource: 撮影モードの Swift ファイル。screenshots.json の scene が ScreenshotDemo.Scene にあるかを突き合わせる。",
+    "appIcon: クリエイティブアセットに載せるアプリアイコン。"
+  ],
+  "project": "Numer0nLens.xcodeproj",
+  "scheme": "Numer0nLens",
+  "configuration": "Release",
+  "simulatorPrefix": "Numer0nLens",
+  "screenshotDemoSource": "Numer0nLens/Screenshot/ScreenshotDemo.swift",
+  "appIcon": "Numer0nLens/Assets.xcassets/AppIcon.appiconset/AppIcon.png"
+}
