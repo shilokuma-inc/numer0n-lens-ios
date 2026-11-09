@@ -128,10 +128,15 @@
       },
     },
   }[lang];
-  // 文言の無い言語は、背景だけの画像を書き出さないようここで止める（render_creative_assets.sh でも先に確かめる）
-  if (!copy || screens.length === 0) {
-    document.body.innerHTML = `<h1 style="color:red;font-size:200px">No copy or screens for "${lang}"</h1>`;
-    throw new Error(`creative.html に ${lang} の文言か画面がありません`);
+  // 検索結果の端末に載せる画面（screenshots.json の scenes の file）。
+  // render_creative_assets.sh がこの行を読んで、書き出す前に scenes にあるかを確かめる
+  const requiredScreens = ["01_deduction", "03_candidates"];
+  // 文言の無い言語や、載せる画面が足りないときは、崩れた画像や別の画面で代用した画像を書き出さないようここで止める
+  // （render_creative_assets.sh でも先に確かめる）
+  const missingScreens = requiredScreens.filter((name) => !screens.includes(name));
+  if (!copy || missingScreens.length > 0) {
+    document.body.innerHTML = `<h1 style="color:red;font-size:200px">No copy or screens for "${lang}": ${missingScreens.join(", ")}</h1>`;
+    throw new Error(`creative.html に ${lang} の文言か画面（${missingScreens.join(", ")}）がありません`);
   }
 
   // ヘッダーで見せる流れ。相手の数を 739 として、実際に候補の数がこう減る（3 桁・重複なし）
@@ -143,8 +148,6 @@
   const canvas = document.getElementById("canvas");
   const W = innerWidth;
   const add = (html) => { canvas.insertAdjacentHTML("beforeend", html); return canvas.lastElementChild; };
-  // 画面が足りないときは、ある画面を繰り返して使う
-  const screen = (name) => screens.includes(name) ? name : screens[0];
   const tiles = (digits, size) => [...digits].map((digit) =>
     `<span class="tile" style="width:${size}px;height:${size * 1.18}px;font-size:${size * 0.78}px">${digit}</span>`).join("");
   const badge = (eat, bite, size) =>
@@ -170,7 +173,7 @@
       button("right", 0.27, 0.115) + button("right", 0.52, 0.06) +
       `<div class="body" style="border-radius:${radius + bezel}px"></div>` +
       `<div class="screen" style="left:${bezel}px;top:${bezel}px;width:${screenWidth}px;height:${screenHeight}px;border-radius:${radius}px">` +
-      `<img src="screens/${lang}/${screen(name)}.png">` +
+      `<img src="screens/${lang}/${name}.png">` +
       `<div class="island" style="top:${11 * scale}px;width:${125 * scale}px;height:${37 * scale}px"></div>` +
       `</div></div>`);
   };

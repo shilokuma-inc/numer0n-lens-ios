@@ -60,6 +60,18 @@ xcrun swiftc -O Tools/remove_alpha.swift -o "$REMOVE_ALPHA"
 
 # screenshots.json の scenes の順（先頭が真ん中の端末に載る）
 SCREENS="$($CONFIG scenes | cut -f1 | paste -sd, -)"
+# HTML が名前で選ぶ画面（const requiredScreens = [...]）が scenes にあるか確かめる。
+# 無いまま書き出すと、HTML はエラーの画面を書き出してしまう（寸法の検査では気づけない）
+REQUIRED_SCREENS="$(sed -n 's/^ *const requiredScreens = \[\(.*\)\];.*$/\1/p' "$SOURCE" | tr -d '" ' | tr ',' ' ')"
+for screen in $REQUIRED_SCREENS; do
+    case ",$SCREENS," in
+        *",$screen,"*) ;;
+        *)
+            echo "$SOURCE が使う画面 $screen が、AppStore/screenshots.json の scenes にありません。" >&2
+            exit 1
+            ;;
+    esac
+done
 
 # 書き出す種類: <type> <ファイル名> <幅> <高さ>（寸法は AppStore/creative_assets.json の説明を参照）
 TARGETS="header header.png 3840 1646
