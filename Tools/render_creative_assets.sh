@@ -9,6 +9,7 @@ set -euo pipefail
 # （Tools/capture_screenshots.sh APP_IPHONE_67 の出力か、Screenshots/App Store ワークフローの artifact。
 #  既定は build/screenshots/APP_IPHONE_67）を、AppStore/screenshots.json の scenes の順に使う。
 # アプリアイコンは AppStore/app.json の appIcon。アプリ名は省略すると .xcodeproj の名前を使う。
+# app.json に creativeFonts（フォントのフォルダ）があれば、その中のフォントを HTML の隣の fonts/ に置く。
 # Google Chrome をヘッドレスで開いて実寸で撮り、アルファを落として AppStore/creative/<言語>/ に保存する。
 # 書き出したら差分を見てコミットし、Creative assets/App Store ワークフローで反映する。
 
@@ -19,6 +20,7 @@ CONFIG="python3 Tools/app_store_config.py"
 SCREENSHOTS="${1:-build/screenshots/APP_IPHONE_67}"
 APP_NAME="${2:-$($CONFIG app scheme)}"
 APP_ICON="$($CONFIG app appIcon)"
+FONTS="$($CONFIG app creativeFonts)"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 SOURCE="AppStore/creative/src/creative.html"
 OUTPUT_DIR="AppStore/creative"
@@ -31,6 +33,10 @@ if [ -z "$APP_ICON" ] || [ ! -f "$APP_ICON" ]; then
     echo "アプリアイコンが見つかりません。AppStore/app.json の appIcon を確かめてください: ${APP_ICON:-（未設定）}" >&2
     exit 1
 fi
+if [ -n "$FONTS" ] && [ ! -d "$FONTS" ]; then
+    echo "フォントのフォルダが見つかりません。AppStore/app.json の creativeFonts を確かめてください: $FONTS" >&2
+    exit 1
+fi
 if grep -q '"TODO:' "$SOURCE"; then
     echo "注意: $SOURCE に仮の文言（\"TODO: …）が残っています（このままでは App Store Connect に反映できません）" >&2
 fi
@@ -39,6 +45,15 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 cp "$SOURCE" "$WORK/creative.html"
 cp "$APP_ICON" "$WORK/icon.png"
+# フォントが読めないと、Chrome は代わりのフォントのまま書き出してしまう（寸法の検査では気づけない）
+if [ -n "$FONTS" ]; then
+    mkdir -p "$WORK/fonts"
+    find "$FONTS" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) -exec cp {} "$WORK/fonts/" \;
+    if [ -z "$(ls -A "$WORK/fonts")" ]; then
+        echo "$FONTS にフォント（.ttf / .otf）がありません。" >&2
+        exit 1
+    fi
+fi
 
 REMOVE_ALPHA="$WORK/remove_alpha"
 xcrun swiftc -O Tools/remove_alpha.swift -o "$REMOVE_ALPHA"
