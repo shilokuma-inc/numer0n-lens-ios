@@ -31,6 +31,7 @@ struct AppVersion: Equatable, Sendable {
         "バージョン \(version)（ビルド \(build)）"
     }
 
+    /// Info.plist の `key` の値を、前後の空白と改行を落として返す。無い・空・文字列でないときは `nil`。
     private static func value(for key: String, in infoDictionary: [String: Any]?) -> String? {
         guard let value = (infoDictionary?[key] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
             return nil
