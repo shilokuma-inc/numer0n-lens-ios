@@ -21,6 +21,7 @@
 		F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000E8 /* BundledFontTests.swift */; };
 		F0A1C0DE00000000000000EB /* PrivacyManifestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000EC /* PrivacyManifestTests.swift */; };
 		F0A1C0DE00000000000000F3 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000F4 /* AppVersion.swift */; };
+		F0A1C0DE00000000000000F5 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000F6 /* AppVersionTests.swift */; };
 		F0A1C0DE00000000000000F1 /* ColorTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */; };
 		E16164A1275FC679005A8615 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16164A0275FC679005A8615 /* Assets.xcassets */; };
 		E16164AF275FC679005A8615 /* Numer0nLensTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16164AE275FC679005A8615 /* Numer0nLensTests.swift */; };
@@ -95,6 +96,7 @@
 		F0A1C0DE00000000000000E8 /* BundledFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledFontTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000EC /* PrivacyManifestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyManifestTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000F4 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		F0A1C0DE00000000000000F6 /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTokenTests.swift; sourceTree = "<group>"; };
 		E1F0000000000000000000C1 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E1F0000000000000000000C2 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				D351C0DE000000000000010E /* DesignComponentTests.swift */,
 				F0A1C0DE00000000000000E8 /* BundledFontTests.swift */,
 				F0A1C0DE00000000000000EC /* PrivacyManifestTests.swift */,
+				F0A1C0DE00000000000000F6 /* AppVersionTests.swift */,
 				F0A1C0DE00000000000000F2 /* ColorTokenTests.swift */,
 				F0A1C0DE00000000000000C6 /* TutorialPageTests.swift */,
 				F0A1C0DE0000000000000056 /* GameStateTests.swift */,
@@ -503,6 +506,7 @@
 				D351C0DE000000000000010D /* DesignComponentTests.swift in Sources */,
 				F0A1C0DE00000000000000E7 /* BundledFontTests.swift in Sources */,
 				F0A1C0DE00000000000000EB /* PrivacyManifestTests.swift in Sources */,
+				F0A1C0DE00000000000000F5 /* AppVersionTests.swift in Sources */,
 				F0A1C0DE00000000000000F1 /* ColorTokenTests.swift in Sources */,
 				F0A1C0DE0000000000000055 /* GameStateTests.swift in Sources */,
 				F0A1C0DE0000000000000085 /* CallInputTests.swift in Sources */,
