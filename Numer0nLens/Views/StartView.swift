@@ -30,8 +30,14 @@ struct StartView: View {
                 }
                 .buttonStyle(.primary)
 
-                // 同梱したフォントの著作権表示とライセンス（SIL OFL）を読めるようにする。
-                LicenseLink()
+                VStack(spacing: Spacing.extraSmall) {
+                    // 同梱したフォントの著作権表示とライセンス（SIL OFL）を読めるようにする。
+                    LicenseLink()
+                    // 撮影モードでは出さない（バージョンを上げるたびに、App Store のスクリーンショットが古くならないように）。
+                    if !ScreenshotDemo.isEnabled, let appVersion = AppVersion.current {
+                        AppVersionText(appVersion: appVersion)
+                    }
+                }
             }
             .padding(Spacing.large)
         }
@@ -125,6 +131,19 @@ extension DigitCount {
     /// 画面に出す名前（例: "3 桁"）。
     var label: String {
         "\(rawValue) 桁"
+    }
+}
+
+/// スタート画面の下に出す、アプリのバージョンとビルド番号。問い合わせのときに伝えやすいよう、選んでコピーできるようにする。
+struct AppVersionText: View {
+    let appVersion: AppVersion
+
+    var body: some View {
+        Text(appVersion.label)
+            .font(.caption)
+            .foregroundStyle(Palette.inkSecondary)
+            .textSelection(.enabled)
+            .accessibilityIdentifier("appVersionText")
     }
 }
 
