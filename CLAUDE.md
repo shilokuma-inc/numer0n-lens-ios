@@ -43,7 +43,7 @@ xcodebuild test -project Numer0nLens.xcodeproj -scheme Numer0nLens -destination 
 | ワークフロー | 実行するタイミング | 内容 |
 | --- | --- | --- |
 | Build（`build.yml` → `_build.yml`） | 全ブランチの push・PR の作成時など | SwiftLint（`--strict`）＋ビルド＋Unit テスト。PR と `develop` / `main` / `release/**` では UI テストも |
-| Archive（`archive.yml` → `_archive.yml`） | `main` への push・手動 | Archive → IPA Export（アップロードしない） |
+| Archive（`archive.yml` → `_archive.yml`） | 手動 | Archive → IPA Export（アップロードしない） |
 | Upload（`upload.yml` → `_archive.yml`） | `develop` / `release/**` への push・手動 | Archive → IPA Export → App Store Connect（TestFlight） |
 | Close goal Discussion（`close-goal-discussion.yml`） | `epic-final` 付きの PR が `develop` にマージされたとき | ゴール元の Discussion を解決済みで閉じる |
 | Screenshots/App Store（`app-store-screenshots.yml`） | 手動（`release/**` を選んだときだけ撮る） | 撮影モードでスクリーンショットを撮り、App Store Connect に反映 |
