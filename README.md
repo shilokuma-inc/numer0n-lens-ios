@@ -38,9 +38,6 @@ numer0n-lens-ios
           </a>
         </td>
         <td style="border:2px double #000080;text-align:center;">
-          <a href="https://github.com/shilokuma-inc/numer0n-lens-ios/actions/workflows/archive.yml?query=branch%3Amain">
-            <img src="https://github.com/shilokuma-inc/numer0n-lens-ios/actions/workflows/archive.yml/badge.svg?branch=main" alt="Archive">
-          </a>
         </td>
         <td style="border:2px double #000080;text-align:center;">
         </td>
@@ -93,15 +90,16 @@ xcodebuild test -project Numer0nLens.xcodeproj -scheme Numer0nLens -destination 
 
 | ブランチ | Build（ビルド + テスト + SwiftLint） | Archive（IPA Export） | Upload（App Store Connect） |
 |---|:-:|:-:|:-:|
-| `main` | ✅ | ✅ | |
+| `main` | ✅ | | |
 | `develop` | ✅ | | ✅ |
 | `release/**` | ✅ | | ✅ |
 | その他の作業ブランチ | ✅（Unit テストのみ） | | |
 | Pull Request の作成時（opened / reopened / ready_for_review） | ✅ | | |
 | Fork からの Pull Request | ✅ | | |
+| 手動実行（workflow_dispatch） | | ✅ | ✅ |
 
 - Upload は Archive → IPA Export を含むため、`develop` / `release/**` では Archive を別途実行しません
-- Archive / Upload は Actions タブから手動でも実行できます（Run workflow）
+- `main` への push で実行するのは Build だけです。Archive は Actions タブから手動で実行します（Run workflow）。Upload は手動でも実行できます
 - `epic/**` 宛ての Pull Request（ralph-loop の子 PR）では PR イベントで Build を実行しません（ブランチへの push で実行されます）
 - ドキュメントだけの変更（`**/*.md`、`docs/**`）では Build を実行しません
 - Xcode のバージョンは [.github/workflows/_build.yml](.github/workflows/_build.yml) と [.github/workflows/_archive.yml](.github/workflows/_archive.yml) の `xcode-version` で固定しています
@@ -257,7 +255,7 @@ API が無い・リリースの判断が要るなど、ワークフローで反�
         ├── _build.yml       # 共通処理: ビルド + テスト + SwiftLint（workflow_call）
         ├── _archive.yml     # 共通処理: Archive → Export（→ Upload）（workflow_call）
         ├── build.yml        # 全ブランチの push / PR
-        ├── archive.yml      # main の push
+        ├── archive.yml      # 手動実行のみ
         ├── upload.yml       # develop / release/** の push
         ├── app-store-screenshots.yml        # スクリーンショットの撮影と反映（release/** から手動）
         ├── app-store-metadata.yml           # 説明文などの反映（手動）
