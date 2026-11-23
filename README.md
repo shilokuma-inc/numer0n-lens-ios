@@ -100,7 +100,7 @@ xcodebuild test -project Numer0nLens.xcodeproj -scheme Numer0nLens -destination 
 
 - Upload は Archive → IPA Export を含むため、`develop` / `release/**` では Archive を別途実行しません
 - `main` への push で実行するのは Build だけです。Archive は Actions タブから手動で実行します（Run workflow）。Upload は手動でも実行できます
-- `epic/**` 宛ての Pull Request（ralph-loop の子 PR）では PR イベントで Build を実行しません（ブランチへの push で実行されます）
+- AskHub の子 PR（作業ブランチ `askhub/**` 宛て）では PR イベントで Build を実行しません（ブランチへの push で実行されます）。最終 PR（`askhub/**` → `develop`）は、更新のたびに UI テストまで実行します
 - ドキュメントだけの変更（`**/*.md`、`docs/**`）では Build を実行しません
 - Xcode のバージョンは [.github/workflows/_build.yml](.github/workflows/_build.yml) と [.github/workflows/_archive.yml](.github/workflows/_archive.yml) の `xcode-version` で固定しています
 - CI のワークフローは、リポジトリ直下の `*.xcodeproj` と同名の共有スキーム（`Numer0nLens`）があることを前提にしています
