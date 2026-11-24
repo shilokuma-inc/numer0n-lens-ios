@@ -18,7 +18,7 @@ Target audience: players of this game and people who enjoy logic puzzles. Tracki
 No login, account, credentials, or sample files are required.
 The user interface is in Japanese. English translations are given in brackets.
 1. On first launch, a tutorial explains the rules and the app. Swipe through the pages or tap "スキップ" [Skip]. Reopen it anytime with the "?" button (top right).
-2. Choose 3, 4, or 5 digits and tap "ゲームを始める" [Start game].
+2. Choose 3, 4, or 5 digits and tap "ゲームを始める" [Start game]. The app version and build number are shown at the bottom of this screen.
 3. In the "自分の推理" [My deduction] tab, enter a call, select the number of EAT and BITE, and tap "履歴に追加" [Add to history]. The remaining candidates and "最善手" [Best moves] are updated. Tapping a best move fills it into the input field.
 4. Switch to the "相手の推理" [Opponent's deduction] tab at the top to enter the opponent's calls and the user's answers.
 5. Tap "すべて見る" [See all] to open the full list of remaining candidates.

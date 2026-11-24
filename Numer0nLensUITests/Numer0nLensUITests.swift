@@ -31,6 +31,28 @@ class Numer0nLensUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
+    /// スタート画面の下に、アプリのバージョンとビルド番号が出ること。
+    func testStartScreenShowsAppVersion() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-skipTutorial"]
+        app.launch()
+
+        let appVersion = app.staticTexts["appVersionText"]
+        XCTAssertTrue(appVersion.waitForExistence(timeout: 5))
+        XCTAssertTrue(appVersion.label.hasPrefix("バージョン "), appVersion.label)
+        XCTAssertTrue(appVersion.label.contains("（ビルド "), appVersion.label)
+    }
+
+    /// App Store 用のスクリーンショットの撮影モードでは、バージョンを出さないこと。
+    func testScreenshotDemoHidesAppVersion() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-screenshot-demo", "-screenshot-scene", "start"]
+        app.launch()
+
+        XCTAssertTrue(app.buttons["ゲームを始める"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["appVersionText"].exists)
+    }
+
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
             // This measures how long it takes to launch your application.

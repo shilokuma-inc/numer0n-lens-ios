@@ -106,6 +106,9 @@ def app_value(key: str) -> str:
         return "true" if config.get("xcodegen") else "false"
     if key == "appIcon":
         return config.get("appIcon") or ""
+    if key == "creativeFonts":
+        # クリエイティブアセットの HTML から fonts/ として読むフォントのフォルダ（省略できる）
+        return config.get("creativeFonts") or ""
     raise SystemExit(f"app.json の {key} は読めません")
 
 
